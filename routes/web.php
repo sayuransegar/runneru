@@ -21,4 +21,16 @@ Route::get('/runnerregister', function () {
     return view('auth.runnerregister');
 })->name('runnerregister');
 
+Route::get('/requestdelivery', function () {
+    return view('RequestDelivery.requestdelivery');
+})->name('requestdelivery');
+
+Route::get('/requested', function () {
+    return view('RequestDelivery.requested');
+})->name('requested');
+
+Route::controller(App\Http\Controllers\deliveryController::class)->group(function(){
+    Route::post('/requestdelivery','store')->name('requestdelivery');
+});
+
 require __DIR__.'/auth.php';
