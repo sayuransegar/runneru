@@ -27,7 +27,7 @@
         <!-- Role -->
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
-            <select id="role" class="block mt-1 w-full" name="role" required autofocus autocomplete="name">
+            <select id="role" class="block mt-1 w-full" name="role" autofocus autocomplete="name">
                 <option value="" disabled selected>Select Role</option>
                 <option value="">Customer</option>
                 <option value="">Runner</option>

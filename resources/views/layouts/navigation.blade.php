@@ -19,6 +19,10 @@
                     <x-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
                         {{ __('Runner Registration') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('requestdelivery')" :active="request()->routeIs('requestdelivery')">
+                        {{ __('Request Delivery') }}
+                    </x-nav-link>
                 </div>
             </div>
 
