@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Request Delivery') }}
         </h2>
     </x-slot>
 
@@ -16,7 +16,7 @@
                         <!-- Runner -->
                         <div>
                             <x-input-label for="runner" :value="__('Available Runner')" />
-                            <select id="runnerid" class="block mt-1 w-full" name="runnerid" required autofocus autocomplete="name">
+                            <select id="runnerid" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="runnerid" required autofocus autocomplete="name">
                                 <option value="" disabled selected>Select Runner</option>
                                 <option value="Aiman">Aiman</option>
                                 <option value="Afiq">Afiq</option>
@@ -27,7 +27,7 @@
                         <!-- Item -->
                         <div class="mt-4">
                             <x-input-label for="item" :value="__('What would you like to do?')" />
-                            <textarea id="item" class="block mt-1 w-full" name="item" required autocomplete="name" rows="5" placeholder="E.g.
+                            <textarea id="item" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="item" required autocomplete="name" rows="5" placeholder="E.g.
 Parcel:
 2 parcel at PAP
 Buy Instant Noodle:
@@ -43,7 +43,7 @@ Buy Instant Noodle:
                         <!-- Price Range -->
                         <div class="mt-4">
                             <x-input-label for="price" :value="__('Price Range')" />
-                            <select id="price" class="block mt-1 w-full" name="price" required autofocus autocomplete="name">
+                            <select id="price" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="price" required autofocus autocomplete="name">
                                 <option value="" disabled selected>Select Price Range</option>
                                 <option value="RM0 - RM10">RM0 - RM10</option>
                                 <option value="RM11-RM20">RM11-RM20</option>
@@ -103,6 +103,6 @@ Buy Instant Noodle:
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/mapinput.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8RKNo8CfJ0Q1NUMdQKvVdBPW1EZOuHkA&libraries=marker,places&callback=geoLocationInit"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwIBxZagluW6TDJ6Y0bgNgmsN240X7gHM&libraries=marker,places&callback=geoLocationInit"></script>
 
 </x-app-layout>

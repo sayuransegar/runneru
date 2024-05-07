@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreign('userid')->references('id')->on('users')->nullable();
             $table->foreign('runnerid')->references('id')->on('runner')->nullable();
-            $table->string('item')->unsigned();
-            $table->string('addinstruct')->unsigned();
-            $table->string('price')->unsigned();
-            $table->string('shoplocation')->unsigned();
-            $table->varchar('shoplat')->unsigned();
-            $table->varchar('shoplng')->unsigned();
-            $table->string('deliverylocation')->unsigned();
-            $table->varchar('deliverylat')->unsigned();
-            $table->varchar('deliverylng')->unsigned();
-            $table->integer('status')->unsigned();
+            $table->string('item')->nullable();
+            $table->string('addinstruct')->nullable();
+            $table->string('price')->nullable();
+            $table->string('shoplocation')->nullable();
+            $table->varchar('shoplat')->nullable();
+            $table->varchar('shoplng')->nullable();
+            $table->string('deliverylocation')->nullable();
+            $table->varchar('deliverylat')->nullable();
+            $table->varchar('deliverylng')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

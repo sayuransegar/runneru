@@ -78,6 +78,15 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <!-- Runner Registration Link -->
+            <x-responsive-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
+                {{ __('Runner Registration') }}
+            </x-responsive-nav-link>
+            
+            <!-- Request Delivery Link -->
+            <x-responsive-nav-link :href="route('requestdelivery')" :active="request()->routeIs('requestdelivery')">
+                {{ __('Request Delivery') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
