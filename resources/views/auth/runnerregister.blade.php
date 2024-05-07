@@ -12,7 +12,7 @@
                     <!-- Hostel -->
                     <div>
                         <x-input-label for="hostel" :value="__('Hostel')" />
-                        <select id="hostel" class="block mt-1 w-full" name="hostel" required autofocus autocomplete="name">
+                        <select id="hostel" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="hostel" required autofocus autocomplete="name">
                             <option value="" disabled selected>Select Hostel</option>
                             <option value="mawardah">Mawardah</option>
                             <option value="kk5">Kolej Kediaman 5</option>
@@ -23,7 +23,7 @@
                     <!-- Reason -->
                     <div class="mt-4">
                         <x-input-label for="reason" :value="__('Reason')" />
-                        <textarea id="reason" class="block mt-1 w-full" name="reason" required autocomplete="username" rows="5"></textarea>
+                        <textarea id="reason" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="reason" required autocomplete="username" rows="5"></textarea>
                     </div>
 
                     <!-- Apply Button -->

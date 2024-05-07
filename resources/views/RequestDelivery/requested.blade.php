@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout onload="initMap()">
 <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -11,15 +11,14 @@
                 <div class="p-6 text-gray-900">
                     <div class="container">
                         <div class="form-group">
-                            <input id="source" class="form-control" type="text" placeholder="Source">
+                            <x-text-input id="source" class="form-control block mt-1 w-full" type="text" placeholder="Source"/>
                         </div>
-                        <div class="form-group">
-                            <input id="dest" class="form-control" type="text" placeholder="Destination">
+                        <div class="form-group mt-4">
+                            <x-text-input id="dest" class="form- block mt-1 w-full" type="text" placeholder="Destination"/>
                         </div>
-                        <button class="btn btn-primary" onclick="calcRoute()">Get Directions</button>
-                        <br><br>
-                        <div id="map" style="height: 500px; width: 100%;"></div>
-                        <br>
+                        <x-primary-button class="mt-4 btn btn-primary" onclick="calcRoute()">Get Directions</x-primary-button>
+                        <div class="mt-4 form-control block mt-1 w-full" id="travel-time"></div>
+                        <div class="mt-4" id="map" style="height: 500px; width: 100%;"></div>
                     </div>
                 </div>
             </div>
@@ -28,5 +27,5 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/direction.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8RKNo8CfJ0Q1NUMdQKvVdBPW1EZOuHkA&libraries=places&callback=geoLocationInit"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwIBxZagluW6TDJ6Y0bgNgmsN240X7gHM&libraries=places&callback=initMap"></script>
 </x-app-layout>

@@ -27,11 +27,11 @@
         <!-- Role -->
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
-            <select id="role" class="block mt-1 w-full" name="role" autofocus autocomplete="name">
+            <select id="role" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="role" autocomplete="name">
                 <option value="" disabled selected>Select Role</option>
-                <option value="">Customer</option>
-                <option value="">Runner</option>
-                <option value="">Admin</option>
+                <option value="customer">Customer</option>
+                <option value="runner">Runner</option>
+                <option value="admin">Admin</option>
             </select>
         </div>
 
@@ -43,16 +43,28 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+            <div class="flex items-center justify-end">
+                @if (Route::has('register'))
+                    <a
+                        href="{{ route('register') }}"
+                        class="ms-4 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Register
+                    </a>
+                @endif
+
+                <x-primary-button class="ms-2">
+                    {{ __('Log in') }}
+                </x-primary-button>
+            </div>
         </div>
+
     </form>
 </x-guest-layout>

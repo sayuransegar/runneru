@@ -18,6 +18,7 @@ class delivery extends Model
      protected $connection = 'mongodb';
 
      protected $fillable = [
+         'userid',
          'runnerid',
          'item',
          'addinstruct',
