@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,8 +30,14 @@ Route::get('/requested', function () {
     return view('RequestDelivery.requested');
 })->name('requested');
 
-Route::controller(App\Http\Controllers\deliveryController::class)->group(function(){
+Route::controller(App\Http\Controllers\DeliveryController::class)->group(function(){
     Route::post('/requestdelivery','store')->name('requestdelivery');
 });
+
+Route::get('/check-delivery-request', [DeliveryController::class, 'hasDeliveryRequest']);
+
+Route::get('/fetch-coordinates', [DeliveryController::class, 'showLocation'])->name('fetch-coordinates');
+
+Route::delete('/canceldelivery', [DeliveryController::class, 'cancelDelivery'])->name('canceldelivery');
 
 require __DIR__.'/auth.php';
