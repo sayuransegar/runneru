@@ -1,7 +1,7 @@
 <x-app-layout onload="initMap()">
 <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Delivery') }}
         </h2>
     </x-slot>
 
@@ -10,15 +10,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="container">
-                        <div class="form-group">
-                            <x-text-input id="source" class="form-control block mt-1 w-full" type="text" placeholder="Source"/>
-                        </div>
-                        <div class="form-group mt-4">
-                            <x-text-input id="dest" class="form- block mt-1 w-full" type="text" placeholder="Destination"/>
-                        </div>
-                        <x-primary-button class="mt-4 btn btn-primary" onclick="calcRoute()">Get Directions</x-primary-button>
-                        <div class="mt-4 form-control block mt-1 w-full" id="travel-time"></div>
+                        <div class="form-control block w-full" id="travel-time"></div>
                         <div class="mt-4" id="map" style="height: 500px; width: 100%;"></div>
+                        <form action="{{ route('canceldelivery') }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <div class="flex items-center justify-center mt-4">
+                                <x-danger-button class="ms-4">
+                                    {{ __('Cancel Delivery') }}
+                                </x-danger-button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

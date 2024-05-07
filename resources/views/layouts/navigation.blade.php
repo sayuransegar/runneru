@@ -20,7 +20,7 @@
                         {{ __('Runner Registration') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('requestdelivery')" :active="request()->routeIs('requestdelivery')">
+                    <x-nav-link :href="app('App\Http\Controllers\DeliveryController')->hasDeliveryRequest() ? route('requested') : route('requestdelivery')" :active="request()->routeIs('requested') || request()->routeIs('requestdelivery')">
                         {{ __('Request Delivery') }}
                     </x-nav-link>
                 </div>
@@ -84,7 +84,7 @@
             </x-responsive-nav-link>
             
             <!-- Request Delivery Link -->
-            <x-responsive-nav-link :href="route('requestdelivery')" :active="request()->routeIs('requestdelivery')">
+            <x-responsive-nav-link :href="app('App\Http\Controllers\DeliveryController')->hasDeliveryRequest() ? route('requested') : route('requestdelivery')" :active="request()->routeIs('requested') || request()->routeIs('requestdelivery')">
                 {{ __('Request Delivery') }}
             </x-responsive-nav-link>
         </div>

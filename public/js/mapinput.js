@@ -83,13 +83,11 @@ async function initialize(myLatLng) {
 
     // Create the Autocomplete input field
     autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('autocompleteinput'),
-        { types: ['geocode'] }
+        document.getElementById('autocompleteinput')
     );
 
     autodeliver = new google.maps.places.Autocomplete(
-        document.getElementById('autocompletedeliver'),
-        { types: ['geocode'] }
+        document.getElementById('autocompletedeliver')
     );
 
     // Event listener for place changed
