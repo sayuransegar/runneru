@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('delivery', function (Blueprint $table) {
             $table->id();
             $table->foreign('userid')->references('id')->on('users')->nullable();
-            $table->foreign('runnerid')->references('id')->on('runner')->nullable();
+            $table->foreign('runnerid')->references('id')->on('runners')->nullable();
             $table->string('item')->nullable();
             $table->string('addinstruct')->nullable();
             $table->string('price')->nullable();
