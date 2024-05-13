@@ -64,20 +64,34 @@ class DeliveryController extends Controller
         }
     }
 
-        // Method to cancel the delivery
-        public function cancelDelivery()
-        {
-            // Get the current user's delivery record
-            $delivery = Delivery::where('userid', Auth::id())->first();
-    
-            if ($delivery) {
-                // Delete the delivery record
-                $delivery->delete();
-                
-                return Redirect::route('dashboard')->with('success', 'Delivery canceled successfully');
-            } else {
-                return Redirect::route('dashboard')->with('error', 'No delivery found to cancel');
-            }
+    // Method to cancel the delivery
+    public function cancelDelivery()
+    {
+        // Get the current user's delivery record
+        $delivery = Delivery::where('userid', Auth::id())->first();
+
+        if ($delivery) {
+            // Delete the delivery record
+            $delivery->delete();
+            
+            return Redirect::route('dashboard')->with('success', 'Delivery canceled successfully');
+        } else {
+            return Redirect::route('dashboard')->with('error', 'No delivery found to cancel');
         }
+    }
+
+    public function status(){
+        // Get the current user's ID
+        $userId = Auth::id();
+
+        // Query the delivery table to get the latitude and longitude values
+        $delivery = Delivery::where('userid', $userId)->first();
+        if ($delivery) {
+            $deliveryStatus = $delivery->status;
+            return $deliveryStatus;
+        } else {
+            return 'No delivery found';
+        }
+    }
     
 }
