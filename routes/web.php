@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\runnerController;
@@ -36,13 +37,11 @@ Route::controller(App\Http\Controllers\DeliveryController::class)->group(functio
 });
 
 Route::post('/runnerregistration', [runnerController::class, 'storerunner'])->name('runnerregistration');
-
 Route::get('/check-delivery-request', [DeliveryController::class, 'hasDeliveryRequest']);
-
 Route::get('/fetch-coordinates', [DeliveryController::class, 'showLocation'])->name('fetch-coordinates');
-
 Route::delete('/canceldelivery', [DeliveryController::class, 'cancelDelivery'])->name('canceldelivery');
-
 Route::get('/deliverystatus', [DeliveryController::class, 'status'])->name('deliverystatus');
+Route::get('/listcustomer', [RegisteredUserController::class, 'listcustomer'])->name('listcustomer');
+Route::get('/listrunnerregistration', [runnerController::class, 'listrunnerregistration'])->name('listrunnerregistration');
 
 require __DIR__.'/auth.php';

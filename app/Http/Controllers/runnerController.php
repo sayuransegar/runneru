@@ -33,4 +33,10 @@ class runnerController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    public function listrunnerregistration(){
+        $runnerregisters = Runner::with('user')->get();
+
+        return view('auth.listrunnerregistration', compact('runnerregisters'));
+    }
 }

@@ -30,6 +30,15 @@
             <x-input-error :messages="$errors->get('studid')" class="mt-2" />
         </div>
 
+        <!-- Role -->
+        <div class="mt-4 hidden">
+            <x-input-label for="usertype" :value="__('Role')" />
+            <select id="usertype" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="usertype" autocomplete="name">
+                <option value="customer">Customer</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

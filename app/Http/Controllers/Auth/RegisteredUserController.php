@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'phonenum' => $request->phonenum,
             'studid' => $request->studid,
+            'usertype' => $request->usertype,
             'password' => Hash::make($request->password),
         ]);
 
@@ -49,4 +50,11 @@ class RegisteredUserController extends Controller
 
         return redirect(route('dashboard', absolute: false));
     }
+
+    public function listcustomer(){
+        $customers = User::where('usertype', 'customer')->get();
+
+        return view('auth.listcustomer', compact('customers'));
+    }
+
 }
