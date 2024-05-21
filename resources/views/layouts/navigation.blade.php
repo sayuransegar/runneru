@@ -17,7 +17,7 @@
                     </x-nav-link>
 
                     @if(Auth::user()->usertype == "admin")
-                    <x-nav-link :href="route('listrunnerregistration')" :active="request()->routeIs('listrunnerregistration')">
+                    <x-nav-link :href="route('listrunnerregistration')" :active="request()->routeIs('listrunnerregistration') || request()->routeIs('runnerapproval')">
                         {{ __('Runner Registration') }}
                     </x-nav-link>
 
@@ -30,7 +30,7 @@
                     </x-nav-link>
 
                     @else
-                    <x-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
+                    <x-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
                         {{ __('Runner Registration') }}
                     </x-nav-link>
 

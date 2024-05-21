@@ -24,6 +24,10 @@ Route::get('/runnerregister', function () {
     return view('auth.runnerregister');
 })->name('runnerregister');
 
+Route::get('/runnerregistered', function () {
+    return view('auth.runnerregistered');
+})->name('runnerregistered');
+
 Route::get('/requestdelivery', function () {
     return view('RequestDelivery.requestdelivery');
 })->name('requestdelivery');
@@ -31,6 +35,10 @@ Route::get('/requestdelivery', function () {
 Route::get('/requested', function () {
     return view('RequestDelivery.requested');
 })->name('requested');
+
+Route::get('/runnerapproval', function () {
+    return view('auth.runnerapproval');
+})->name('runnerapproval');
 
 Route::controller(App\Http\Controllers\DeliveryController::class)->group(function(){
     Route::post('/requestdelivery','store')->name('requestdelivery');
@@ -41,7 +49,11 @@ Route::get('/check-delivery-request', [DeliveryController::class, 'hasDeliveryRe
 Route::get('/fetch-coordinates', [DeliveryController::class, 'showLocation'])->name('fetch-coordinates');
 Route::delete('/canceldelivery', [DeliveryController::class, 'cancelDelivery'])->name('canceldelivery');
 Route::get('/deliverystatus', [DeliveryController::class, 'status'])->name('deliverystatus');
+Route::get('/approval', [runnerController::class, 'approval'])->name('approval');
+Route::get('/check-runner-registration', [runnerController::class, 'hasRunnerRegistration']);
+Route::delete('/cancelregistration', [RunnerController::class, 'cancelregistration'])->name('cancelregistration');
 Route::get('/listcustomer', [RegisteredUserController::class, 'listcustomer'])->name('listcustomer');
 Route::get('/listrunnerregistration', [runnerController::class, 'listrunnerregistration'])->name('listrunnerregistration');
+Route::get('/runnerapproval/{id}', [runnerController::class, 'showRunnerRegistration'])->name('runnerapproval');
 
 require __DIR__.'/auth.php';
