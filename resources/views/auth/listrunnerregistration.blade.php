@@ -30,9 +30,9 @@
                                     <td>{{ $runnerregister->user->studid }}</td>
                                     <td>{{ $runnerregister->hostel }}</td>
                                     <td>{{ $runnerregister->reason }}</td>
-                                    <td>{{ $runnerregister->qrcodes }}</td>
+                                    <td style="display: flex; justify-content: center; align-items: center;"><img src="{{ $runnerregister->qrcode }}" alt="QR Code" style="width: 50px; height: 50px;"></td>
                                     <td>
-                                        <a href="" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="{{ route('runnerapproval', $runnerregister->id) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                                     </td>
                                 </tr>
                             @endforeach

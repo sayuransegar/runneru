@@ -31,7 +31,6 @@
                 <option value="" disabled selected>Select Role</option>
                 <option value="customer">Customer</option>
                 <option value="runner">Runner</option>
-                <option value="admin">Admin</option>
             </select>
         </div>
 
