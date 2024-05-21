@@ -16,6 +16,20 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @if(Auth::user()->usertype == "admin")
+                    <x-nav-link :href="route('listrunnerregistration')" :active="request()->routeIs('listrunnerregistration')">
+                        {{ __('Runner Registration') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('listcustomer')" :active="request()->routeIs('listcustomer')">
+                        {{ __('Customers') }}
+                    </x-nav-link>
+
+                    <x-nav-link :active="request()->routeIs('listrunner')">
+                        {{ __('Runners') }}
+                    </x-nav-link>
+
+                    @else
                     <x-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
                         {{ __('Runner Registration') }}
                     </x-nav-link>
@@ -23,6 +37,8 @@
                     <x-nav-link :href="app('App\Http\Controllers\DeliveryController')->hasDeliveryRequest() ? route('requested') : route('requestdelivery')" :active="request()->routeIs('requested') || request()->routeIs('requestdelivery')">
                         {{ __('Request Delivery') }}
                     </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 
@@ -78,15 +94,22 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <!-- Runner Registration Link -->
+
+            @if(Auth::user()->usertype == "admin")
+            <x-responsive-nav-link :href="route('listcustomer')" :active="request()->routeIs('listcustomer')">
+                {{ __('Customer') }}
+            </x-responsive-nav-link>
+
+            @else
             <x-responsive-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
                 {{ __('Runner Registration') }}
             </x-responsive-nav-link>
-            
-            <!-- Request Delivery Link -->
+
             <x-responsive-nav-link :href="app('App\Http\Controllers\DeliveryController')->hasDeliveryRequest() ? route('requested') : route('requestdelivery')" :active="request()->routeIs('requested') || request()->routeIs('requestdelivery')">
                 {{ __('Request Delivery') }}
             </x-responsive-nav-link>
+            @endif
+
         </div>
 
         <!-- Responsive Settings Options -->

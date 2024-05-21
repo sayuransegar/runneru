@@ -24,4 +24,9 @@ class runner extends Model
          'qrcode',
          'approval',
      ];
+
+     public function user()
+     {
+         return $this->belongsTo(User::class, 'userid');
+     }
 }

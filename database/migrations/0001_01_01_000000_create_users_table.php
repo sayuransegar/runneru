@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phonenum')->nullable();
             $table->string('studid')->nullable();
+            $table->string('usertype')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
