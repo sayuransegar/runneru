@@ -37,6 +37,7 @@ class runnerController extends Controller
             'reason' => $request->reason,
             'qrcode' => $upload,
             'approval' => $request->approval,
+            'status' => $request->status,
         ];
 
         Runner::create($data);
@@ -71,7 +72,7 @@ class runnerController extends Controller
 
 
     public function listrunnerregistration(){
-        $runnerregisters = Runner::with('user')->get();
+        $runnerregisters = Runner::with('user')->where('approval', NULL)->get();
 
         return view('auth.listrunnerregistration', compact('runnerregisters'));
     }
@@ -102,5 +103,66 @@ class runnerController extends Controller
         return view('auth.runnerapproval', compact('runnerRegistration'));
     }
 
+    public function updateApproval(Request $request, $id)
+    {
+        $runner = Runner::findOrFail($id);
+        $runner->approval = $request->approval;
+        $runner->save();
+
+        return redirect()->back()->with('status', 'Approval status updated successfully!');
+    }
+
+    public function listrunner(){
+        $listrunners = Runner::with('user')->where('approval', '1')->get();
+
+        return view('auth.listrunner', compact('listrunners'));
+    }
+
+    public function showApprovedRunner($id)
+    {
+        $approvedrunner = Runner::with('user')->where('approval', '1')->find($id);
+    
+        if (!$approvedrunner) {
+            return redirect()->route('approvedrunner')->with('error', 'Runner registration not found.');
+        }
+    
+        return view('auth.approvedrunner', compact('approvedrunner'));
+    }
+    
+    public function updateStatus(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'status' => 'required|string|in:online,offline',
+        ]);
+
+        // Get the current user
+        $user = Auth::user();
+
+        // Find the runner associated with the current user
+        $runner = Runner::where('userid', $user->id)->first();
+
+        if ($runner) {
+            // Update the runner status
+            $runner->status = $request->status;
+            $runner->save();
+
+            return response()->json(['success' => true, 'status' => $runner->status]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Runner not found.'], 404);
+        }
+    }
+
+    public function showDashboard()
+    {
+        $user = Auth::user();
+        $runner = Runner::where('userid', $user->id)->first();
+
+        if (!$runner) {
+            return redirect()->route('runnerdashboard')->with('error', 'You are not a registered runner.');
+        }
+
+        return view('runnerdashboard', compact('runner'));
+    }
 
 }

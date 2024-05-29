@@ -14,13 +14,15 @@
                         @csrf
                         
                         <!-- Runner -->
-                        <div>
+                        <div class="mb-4">
                             <x-input-label for="runner" :value="__('Available Runner')" />
                             <select id="runnerid" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="runnerid" required autofocus autocomplete="name">
                                 <option value="" disabled selected>Select Runner</option>
-                                <option value="Aiman">Aiman</option>
-                                <option value="Afiq">Afiq</option>
-                                <option value="Bad">Bad</option>
+                                @foreach($runners as $runner)
+                                    <option value="{{ $runner->id }}">
+                                        {{ $runner->user->name }} - {{ $runner->user->studid }} - {{ $runner->hostel }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -29,9 +31,9 @@
                             <x-input-label for="item" :value="__('What would you like to do?')" />
                             <textarea id="item" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="item" required autocomplete="name" rows="5" placeholder="E.g.
 Parcel:
-2 parcel at PAP
+ 2 parcel at PAP
 Buy Instant Noodle:
-1 Mee Sedap"></textarea>
+ 1 Mee Sedap"></textarea>
                         </div>
 
                         <!-- addinstruct -->

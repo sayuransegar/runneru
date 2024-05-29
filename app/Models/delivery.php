@@ -31,4 +31,20 @@ class delivery extends Model
          'deliverylng',
          'status',
      ];
+
+
+     public function user()
+     {
+         return $this->belongsTo(User::class, 'userid', '_id');
+     }
+ 
+     public function runner()
+     {
+         return $this->belongsTo(Runner::class, 'runnerid', '_id');
+     }
+
+     public function payment()
+     {
+         return $this->hasOne(Payment::class, 'deliveryid');
+     }
 }
