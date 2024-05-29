@@ -54,4 +54,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(Runner::class, 'userid');
     }
+
+    public function isRunner()
+    {
+        return Runner::where('userid', $this->id)->exists();
+    }
+    
+    public function isCustomer()
+    {
+        return $this->usertype === 'customer';
+    }
+
+        /**
+     * Get the selected role from the session.
+     */
+    public function selectedRole()
+    {
+        return session('selected_role');
+    }
+
+    public function runner()
+    {
+        return $this->hasOne(Runner::class, 'userid', '_id');
+    }
 }

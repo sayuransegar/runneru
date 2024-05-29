@@ -23,10 +23,17 @@ class runner extends Model
          'reason',
          'qrcode',
          'approval',
+         'status',
      ];
 
      public function user()
      {
          return $this->belongsTo(User::class, 'userid');
      }
+
+     public function payments()
+     {
+         return $this->hasMany(Payment::class, 'runnerid');
+     }
+     
 }

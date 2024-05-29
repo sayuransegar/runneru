@@ -27,10 +27,10 @@
                                 <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.7s;">.</span>
                                 <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.8s;">.</span>
                                 <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.9s;">.</span>
-                            @elseif ($approval === 0)
-                                Accepted
-                            @elseif ($approval === 1)
-                                Completed
+                            @elseif ($approval === '0')
+                                Rejected
+                            @elseif ($approval === '1')
+                                Approved
                             @else
                                 Unknown
                             @endif
@@ -39,9 +39,15 @@
                             @csrf
                             @method('DELETE')
                             <div class="flex items-center justify-center mt-4">
-                                <x-danger-button class="ms-4">
-                                    {{ __('Cancel Registration') }}
-                                </x-danger-button>
+                                @if ($approval === null)
+                                    <x-danger-button class="ms-4">
+                                        {{ __('Cancel Registration') }}
+                                    </x-danger-button>
+                                @elseif ($approval === '0')
+                                    <x-danger-button class="ms-4">
+                                        {{ __('Re-register') }}
+                                    </x-danger-button>
+                                @endif
                             </div>
                         </form>
                     </div>
@@ -53,7 +59,4 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/direction.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwIBxZagluW6TDJ6Y0bgNgmsN240X7gHM&libraries=places&callback=initMap"></script>
 </x-app-layout>

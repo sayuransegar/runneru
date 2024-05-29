@@ -28,6 +28,11 @@
                             <textarea id="reason" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="reason" required autocomplete="username" rows="5"></textarea>
                         </div>
 
+                        <!-- <div class="mt-4 hidden">
+                            <x-input-label for="status" :value="__('Status')" />
+                            <x-text-input id="status" class="block mt-1 w-full" type="status" name="status" :value="old('status')" required autofocus autocomplete="username" />
+                        </div> -->
+
                         <div class="mt-4">
                             <x-input-label for="qrcode" :value="__('Upload QR Code')" />
                             <x-text-input type="file" name="qrcode" id="qrcode" class="block mt-1 w-full" />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Delivery;
+use App\Models\runner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -27,9 +28,9 @@ class DeliveryController extends Controller
             'status' => $request->status,
         ];
 
-        Delivery::create($data);
+        $delivery = Delivery::create($data); // Create the delivery record
 
-        return redirect()->route('requested');
+        return redirect()->route('requested', ['id' => $delivery->id]); // Redirect with the ID of the new delivery
     }
 
     public function hasDeliveryRequest()
@@ -93,5 +94,75 @@ class DeliveryController extends Controller
             return 'No delivery found';
         }
     }
+
     
+    public function showOnlineRunner()
+    {
+        $runners = Runner::where('approval', '1')->where('status', 'online')->with('user')->get();
+
+        return view('RequestDelivery.requestdelivery', compact('runners'));
+    }
+    
+    public function listDeliveries()
+    {
+        $user = Auth::user();
+
+
+        $runner = $user->runner;
+        $listdeliveries = Delivery::where('runnerid', $runner->_id)->get();
+
+        return view('RequestDelivery.runnerdelivery', compact('listdeliveries'));
+    }
+
+    public function acceptDelivery($id){
+        $deliveryDetails = Delivery::with('user')->find($id);
+    
+        if (!$deliveryDetails) {
+            return redirect()->route('acceptdelivery')->with('error', 'Runner registration not found.');
+        }
+    
+        $status = $deliveryDetails->status; // Get the status of the delivery
+    
+        return view('RequestDelivery.acceptdelivery', compact('deliveryDetails', 'status'));
+    }
+    
+
+    public function updateStatus(Request $request, $id)
+    {
+        $deliveryStatus = Delivery::findOrFail($id);
+        $deliveryStatus->status = $request->status;
+        $deliveryStatus->save();
+    
+        if ($request->status == '1') {
+            // If accepted, redirect to the same view but with the card-after-accept visible
+            return redirect()->route('acceptdelivery', ['id' => $id])->with('accepted', true);
+        } elseif ($request->status == '3') {
+            // If accepted, redirect to the same view but with the card-after-accept visible
+            return redirect()->route('acceptdelivery', ['id' => $id])->with('accepted', true);
+        } else {
+            // If rejected, redirect to the dashboard
+            return redirect()->route('runnerdashboard')->with('status', 'Approval status updated successfully!');
+        }
+    }
+
+    public function deliverylist()
+    {
+        $user = Auth::user();
+
+        $listdeliveries = Delivery::where('userid', $user->_id)->get();
+
+        return view('RequestDelivery.deliverylist', compact('listdeliveries'));
+    }
+    
+    public function requested($id){
+        $deliveryDetails = Delivery::with('user')->find($id);
+    
+        if (!$deliveryDetails) {
+            return redirect()->route('requested')->with('error', 'Runner registration not found.');
+        }
+    
+        $status = $deliveryDetails->status; // Get the status of the delivery
+    
+        return view('RequestDelivery.requested', compact('deliveryDetails', 'status'));
+    }
 }
