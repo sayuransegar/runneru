@@ -67,5 +67,6 @@ Route::post('/deliverystatusupdate/{id}', [DeliveryController::class, 'updateSta
 Route::post('/submitpayment', [PaymentController::class, 'storepayment'])->name('submitpayment');
 Route::get('/deliverylist', [DeliveryController::class, 'deliverylist'])->name('deliverylist');
 Route::get('/requested/{id}', [DeliveryController::class, 'requested'])->name('requested');
+Route::post('/uploadReceipt', [DeliveryController::class, 'uploadReceipt'])->name('uploadReceipt');
 
 require __DIR__.'/auth.php';

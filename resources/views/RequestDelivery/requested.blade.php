@@ -1,5 +1,5 @@
 <x-app-layout onload="initMap()">
-<x-slot name="header">
+    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Delivery') }}
         </h2>
@@ -33,22 +33,87 @@
                     <div id="accepted-card" class="p-6 text-center text-gray-900 bg-white shadow-lg rounded-lg">
                         <div class="flex flex-col items-center mb-4">
                             <div>
-                                <h3 class="text-2xl font-bold">Out For Delivery</h3>
-                                <p class="text-gray-600 mt-4">Your Delivery is On The Way!</p>
+                                <h3 class="text-2xl font-bold">Delivery Accepted</h3>
+                                <p class="text-gray-600 mt-4">Your Runner Has Accepted Your Delivery!</p>
                             </div>
                         </div>
                     </div>
                 @elseif ($status == '2')
                     <div id="out-for-delivery-card" class="p-6 text-center text-gray-900 bg-white shadow-lg rounded-lg">
+                        <div class="flex flex-col items-center mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Out For Delivery</h3>
+                                <p class="text-gray-600 mt-4">Your Delivery is On The Way!</p>
+                            </div>
+                            <div class="mt-4">
+                                <img id="qrCodeImage" src="{{ $qrCodeUrl }}" alt="QR Code" class="w-50 h-50">
+                            </div>
+                            <div class="mt-4">
+                                <button id="downloadButton" type="button" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4"/>
+                                    </svg>
+                                    Download Image
+                                </button>
+                            </div>
+                            <div class="mt-4 text-xl">
+                                @if($paymentDetails)
+                                    <p>Item Price: RM{{ number_format($paymentDetails->itemprice, 2) }}</p>
+                                    <p>Charge Fee: RM{{ number_format($paymentDetails->servicecharge, 2) }}</p>
+                                    <p class="font-bold">Total Price: RM{{ number_format($paymentDetails->itemprice + $paymentDetails->servicecharge, 2) }}</p>
+                                @else
+                                    <p>Item Price: RM0.00</p>
+                                    <p>Charge Fee: RM0.00</p>
+                                    <p class="font-bold">Total Price: RM0.00</p>
+                                @endif
+                            </div>
+                            <div class="mt-4">
+                                @if($receiptUploaded)
+                                    <div class="text-green-600 font-bold">You have successfully uploaded the receipt!</div>
+                                @else
+                                    <form action="{{ route('uploadReceipt') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="deliveryid" value="{{ $deliveryid }}">
+                                        <div class="mt-4">
+                                            <x-input-label for="receipt" :value="__('Upload QR Code')" />
+                                            <x-text-input type="file" name="receipt" id="receipt" class="block mt-1 w-full border border-gray-300" />
+                                        </div>
+                                        <div class="flex items-center justify-center mt-4">
+                                            <x-primary-button class="ms-4">
+                                                {{ __('Submit') }}
+                                            </x-primary-button>
+                                        </div>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 @elseif ($status == '3')
-                    <div id="delivered-card" class="p-6 text-center text-gray-900 bg-white shadow-lg rounded-lg">
+                    <div id="delivered-card" class="p-6 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                        <div class="flex flex-col items-center mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Delivered</h3>
+                                <p class="text-gray-600 mt-4">Your Delivery Has Been Successfully Delivered!</p>
+                            </div>
+                        </div>
                     </div>
                 @elseif ($status == '0')
-                    <div id="rejected-card" class="p-6 text-gray-900">
+                    <div id="rejected-card" class="p-6 text-center bg-red-100 shadow-md rounded-lg">
+                        <div class="flex flex-col items-center mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Delivery Rejected</h3>
+                                <p class="text-gray-600 mt-4">Your Delivery Has Been Rejected.</p>
+                            </div>
+                        </div>
                     </div>
                 @else
-                    <div id="no-delivery-card" class="p-6 text-gray-900">
+                    <div id="no-delivery-card" class="p-6 text-center text-gray-900 bg-white shadow-lg rounded-lg">
+                        <div class="flex flex-col items-center mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">No Delivery Found</h3>
+                                <p class="text-gray-600 mt-4">No Delivery Details Available.</p>
+                            </div>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -63,6 +128,26 @@
         };
 
         console.log('deliveryDetails:', deliveryDetails);
+        function downloadImage(url) {
+            fetch(url, { mode: 'cors' })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'qr-code.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(console.error);
+        }
+
+        document.getElementById('downloadButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            downloadImage('{{ $qrCodeUrl }}');
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/direction.js"></script>
