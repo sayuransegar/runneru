@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Delivery;
 use App\Models\runner;
+use App\Models\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DeliveryController extends Controller
 {
@@ -154,7 +156,8 @@ class DeliveryController extends Controller
         return view('RequestDelivery.deliverylist', compact('listdeliveries'));
     }
     
-    public function requested($id){
+    public function requested($id)
+    {
         $deliveryDetails = Delivery::with('user')->find($id);
     
         if (!$deliveryDetails) {
@@ -162,7 +165,47 @@ class DeliveryController extends Controller
         }
     
         $status = $deliveryDetails->status; // Get the status of the delivery
+        $deliveryid = $deliveryDetails->id;
     
-        return view('RequestDelivery.requested', compact('deliveryDetails', 'status'));
+        $runner = Runner::find($deliveryDetails->runnerid);
+        $qrCodeUrl = $runner->qrcode;
+    
+        $paymentDetails = Payment::where('deliveryid', $id)->first();
+        
+        $receiptUploaded = $paymentDetails ? $paymentDetails->receipt : null;
+    
+        return view('RequestDelivery.requested', compact('receiptUploaded', 'deliveryid','deliveryDetails', 'status', 'qrCodeUrl', 'paymentDetails'));
     }
+    
+    public function uploadReceipt(Request $request){
+        $fileName = '';
+
+        if ($request->hasFile('receipt')) {
+            //upload to cloudinary
+            $path = 'runneru/receipt';
+            $file = $request->file('receipt')->getClientOriginalName();
+
+            $fileName = pathinfo($file, PATHINFO_FILENAME);
+
+            $publicId = date('Y-m-d_His'). '_'. $fileName;
+            $upload = Cloudinary::upload($request->file('receipt')->getRealPath(),
+            [
+            "public_id" => $publicId,
+            "folder" => $path 
+            ])->getSecurePath();
+        }
+
+        if ($upload) {
+            $payment = Payment::where('deliveryid', $request->deliveryid)->first();
+    
+            if ($payment) {
+                $payment->receipt = $upload;
+                $payment->save();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Receipt uploaded successfully.');
+    }
+
+
 }
