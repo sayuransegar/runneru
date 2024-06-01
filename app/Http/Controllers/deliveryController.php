@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewDeliveryRequest;
 use App\Models\Delivery;
 use App\Models\runner;
 use App\Models\payment;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DeliveryController extends Controller
@@ -124,8 +126,9 @@ class DeliveryController extends Controller
         }
     
         $status = $deliveryDetails->status; // Get the status of the delivery
+        $deliveryid = $deliveryDetails->id;
     
-        return view('RequestDelivery.acceptdelivery', compact('deliveryDetails', 'status'));
+        return view('RequestDelivery.acceptdelivery', compact('deliveryid', 'deliveryDetails', 'status'));
     }
     
 

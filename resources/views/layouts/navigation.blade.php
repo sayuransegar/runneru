@@ -34,9 +34,17 @@
                         <x-nav-link :href="route('listrunner')" :active="request()->routeIs('listrunner')">
                             {{ __('Runners') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('reported-users')" :active="request()->routeIs('acceptdelivery')">
+                            {{ __('Report') }}
+                        </x-nav-link>
                     @elseif(Auth::user()->selectedRole() === 'runner')
                         <x-nav-link :href="route('listdeliveries')" :active="request()->routeIs('listdeliveries') || request()->routeIs('acceptdelivery')">
                             {{ __('Requested Delivery') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('customer-reports')" :active="request()->routeIs('acceptdelivery')">
+                            {{ __('Report') }}
                         </x-nav-link>
                     @elseif(Auth::user()->selectedRole() === 'customer')
                         <x-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
@@ -49,6 +57,10 @@
 
                         <x-nav-link :href="route('deliverylist')" :active="request()->routeIs('deliverylist')">
                             {{ __('Requested Delivery') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('runner-reports')" :active="request()->routeIs('acceptdelivery')">
+                            {{ __('Report') }}
                         </x-nav-link>
                     @endif
                 </div>
