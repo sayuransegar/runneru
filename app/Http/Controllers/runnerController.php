@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
-class runnerController extends Controller
+class RunnerController extends Controller
 {
     public function storerunner(Request $request){
 

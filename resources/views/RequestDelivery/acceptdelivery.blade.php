@@ -71,6 +71,11 @@
                             <h3 class="text-xl font-semibold">Delivery Delivered</h3>
                             <p class="text-gray-600">Your delivery has been successfully completed.</p>
                         </div>
+                        <div class="mt-4 flex justify-center">
+                            <button id="openReportModal" type="button" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300">
+                                Report Customer
+                            </button>
+                        </div>
                     </div>
                 @elseif ($status == '0')
                     <!-- Delivery Reject Card -->
@@ -108,6 +113,11 @@
                         <div class="mb-4">
                             <x-input-label for="deliverylocation" :value="__('Delivery Location')" />
                             <x-text-input id="deliverylocation" class="block mt-1 w-full" type="text" name="deliverylocation" :value="$deliveryDetails->deliverylocation" readonly />
+                        </div>
+                        <div class="mt-4 flex justify-center">
+                            <button id="openReportModal" type="button" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300">
+                                Report Customer
+                            </button>
                         </div>
                     </div>
                 @else
@@ -165,6 +175,38 @@
                 @endif
             </div>
         </div>
+        <!-- Modal -->
+        <div id="reportModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50">
+            <div class="flex items-center justify-center min-h-screen px-4">
+                <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h3 class="text-lg font-medium text-gray-800">Report Customer</h3>
+                        <button id="closeReportModal" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                <!-- Report Modal Form -->
+                <form action="{{ route('reportstorecustomer') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="userid" value="{{ auth()->user()->id }}"> <!-- Runner's User ID -->
+                    <input type="hidden" name="deliveryid" value="{{ $deliveryDetails->id }}"> <!-- Delivery ID -->
+                    <input type="hidden" name="runnerid" value="{{ $deliveryDetails->runner->id }}"> <!-- Runner's ID from Runner database -->
+                    <input type="hidden" name="reporterid" value="{{ $deliveryDetails->runner->id }}"> <!-- Runner's ID from Runner database -->
+                    <input type="hidden" name="reportedid" value="{{ $deliveryDetails->user->id }}"> <!-- Customer's User ID -->
+                    <div class="mb-4">
+                        <label for="reason" class="block text-sm font-medium text-gray-700">Reason</label>
+                        <textarea id="reason" name="reason" rows="4" class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300">
+                            Submit Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -178,6 +220,15 @@
         };
 
         console.log('deliveryDetails:', deliveryDetails);
+    </script>
+    <script>
+        document.getElementById('openReportModal').addEventListener('click', function () {
+            document.getElementById('reportModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeReportModal').addEventListener('click', function () {
+            document.getElementById('reportModal').classList.add('hidden');
+        });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwIBxZagluW6TDJ6Y0bgNgmsN240X7gHM&libraries=places&loading=async&callback=initMap" async defer></script>
 </x-app-layout>

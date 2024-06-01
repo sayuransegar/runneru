@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 
-class payment extends Model
+class report extends Model
 {
     use HasFactory;
 
@@ -13,9 +13,9 @@ class payment extends Model
         'runnerid',
         'userid',
         'deliveryid',
-        'itemprice',
-        'servicecharge',
-        'receipt',
+        'reporterid',
+        'reportedid',
+        'reason',
     ];
 
     public function runner()
@@ -32,4 +32,15 @@ class payment extends Model
     {
         return $this->belongsTo(Delivery::class, 'deliveryid');
     }
+
+    public function reportedUser()
+    {
+        return $this->belongsTo(User::class, 'reportedid');
+    }
+
+    public function reportedRunner()
+    {
+        return $this->belongsTo(Runner::class, 'reportedid');
+    }
+
 }
