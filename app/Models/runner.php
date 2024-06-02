@@ -24,6 +24,7 @@ class runner extends Model
          'qrcode',
          'approval',
          'status',
+         'blocked',
      ];
 
      public function user()

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'phonenum',
         'studid',
         'usertype',
+        'blocked',
         'password',
     ];
 
@@ -48,6 +49,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            $user->runners()->delete();
+            $user->deliveries()->delete();
+            $user->payments()->delete();
+            $user->reports()->delete();
+        });
     }
 
     public function runners()
@@ -76,5 +89,20 @@ class User extends Authenticatable
     public function runner()
     {
         return $this->hasOne(Runner::class, 'userid', '_id');
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class, 'userid');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'userid');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'userid');
     }
 }

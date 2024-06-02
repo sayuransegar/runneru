@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RunnerController extends Controller
@@ -112,11 +113,23 @@ class RunnerController extends Controller
         return redirect()->back()->with('status', 'Approval status updated successfully!');
     }
 
-    public function listrunner(){
-        $listrunners = Runner::with('user')->where('approval', '1')->get();
-
-        return view('auth.listrunner', compact('listrunners'));
+    public function listrunner(Request $request)
+    {
+        $search = $request->input('search');
+    
+        $query = Runner::with('user')->where('approval', '1');
+    
+        if ($search) {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('studid', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $listrunners = $query->get();
+    
+        return view('auth.listrunner', compact('listrunners', 'search'));
     }
+    
 
     public function showApprovedRunner($id)
     {
@@ -163,6 +176,22 @@ class RunnerController extends Controller
         }
 
         return view('runnerdashboard', compact('runner'));
+    }
+
+    public function blockRunner($id)
+    {
+        $runner = User::findOrFail($id);
+        $runner->update(['blocked' => true]);
+
+        return redirect()->route('listrunner')->with('status', 'runner blocked successfully');
+    }
+
+    public function unblockRunner($id)
+    {
+        $runner = User::findOrFail($id);
+        $runner->update(['blocked' => false]);
+
+        return redirect()->route('listrunner')->with('status', 'runner unblocked successfully');
     }
 
 }

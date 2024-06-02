@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewDeliveryRequest;
+use App\Events\RequestDelivery;
 use App\Models\Delivery;
 use App\Models\runner;
 use App\Models\payment;
@@ -127,8 +127,9 @@ class DeliveryController extends Controller
     
         $status = $deliveryDetails->status; // Get the status of the delivery
         $deliveryid = $deliveryDetails->id;
+        $paymentDetails = Payment::where('deliveryid', $deliveryid)->first();
     
-        return view('RequestDelivery.acceptdelivery', compact('deliveryid', 'deliveryDetails', 'status'));
+        return view('RequestDelivery.acceptdelivery', compact('deliveryid', 'deliveryDetails', 'status', 'paymentDetails'));
     }
     
 
