@@ -26,13 +26,13 @@
                             @foreach($runnerregisters as $runnerregister)
                                 <tr>
                                     <td>{{ $number++ }}</td>
-                                    <td>{{ $runnerregister->user->name }}</td>
-                                    <td>{{ $runnerregister->user->studid }}</td>
-                                    <td>{{ $runnerregister->hostel }}</td>
-                                    <td>{{ $runnerregister->reason }}</td>
-                                    <td style="display: flex; justify-content: center; align-items: center;"><img src="{{ $runnerregister->qrcode }}" alt="QR Code" style="width: 50px; height: 50px;"></td>
+                                    <td>{{ $runnerregister->user->name ?? 'N/A' }}</td>
+                                    <td>{{ $runnerregister->user->studid ?? 'N/A' }}</td>
+                                    <td>{{ $runnerregister->hostel ?? 'N/A' }}</td>
+                                    <td>{{ $runnerregister->reason ?? 'N/A' }}</td>
+                                    <td style="display: flex; justify-content: center; align-items: center;"><img src="{{ $runnerregister->qrcode ?? 'N/A' }}" alt="QR Code" style="width: 50px; height: 50px;"></td>
                                     <td>
-                                        <a href="{{ route('runnerapproval', $runnerregister->id) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="{{ route('runnerapproval', $runnerregister->id) ?? 'N/A' }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                                     </td>
                                 </tr>
                             @endforeach

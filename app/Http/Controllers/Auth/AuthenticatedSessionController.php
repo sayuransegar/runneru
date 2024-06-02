@@ -39,8 +39,13 @@ class AuthenticatedSessionController extends Controller
         $user = User::where('email', $credentials['email'])->first();
     
         if ($user && Hash::check($credentials['password'], $user->password)) {
+            // Check if the user is blocked
+            if ($user->blocked) {
+                return back()->withErrors(['email' => 'Your account has been blocked.']);
+            }
+    
             session(['selected_role' => $credentials['role']]);
-            
+    
             if ($credentials['role'] === 'runner') {
                 $runner = Runner::where('userid', $user->id)->first();
                 if ($runner) {
@@ -64,7 +69,7 @@ class AuthenticatedSessionController extends Controller
             } elseif($credentials['role'] === 'admin'){
                 if ($user->usertype == "admin") {
                     Auth::login($user);
-                    return redirect()->route('dashboard');
+                    return redirect()->route('admindashboard');
                 } else {
                     return back()->withErrors(['role' => 'You are not an admin.']);
                 }
@@ -74,7 +79,7 @@ class AuthenticatedSessionController extends Controller
         }
     
         return back()->withErrors(['email' => 'These credentials do not match our records.']);
-    }    
+    }
 
     /**
      * Destroy an authenticated session.

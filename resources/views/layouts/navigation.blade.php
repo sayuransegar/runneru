@@ -16,6 +16,10 @@
                         <x-nav-link :href="route('runnerdashboard')" :active="request()->routeIs('runnerdashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+                    @elseif(Auth::user()->usertype == "admin")
+                        <x-nav-link :href="route('admindashboard')" :active="request()->routeIs('admindashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
@@ -35,7 +39,7 @@
                             {{ __('Runners') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('reported-users')" :active="request()->routeIs('acceptdelivery')">
+                        <x-nav-link :href="route('reported-users')" :active="request()->routeIs('reported-users')">
                             {{ __('Report') }}
                         </x-nav-link>
                     @elseif(Auth::user()->selectedRole() === 'runner')
@@ -43,10 +47,10 @@
                             {{ __('Requested Delivery') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('customer-reports')" :active="request()->routeIs('acceptdelivery')">
+                        <x-nav-link :href="route('customer-reports')" :active="request()->routeIs('customer-reports')">
                             {{ __('Report') }}
                         </x-nav-link>
-                    @elseif(Auth::user()->selectedRole() === 'customer')
+                    @else
                         <x-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
                             {{ __('Runner Registration') }}
                         </x-nav-link>
@@ -55,16 +59,15 @@
                             {{ __('Request Delivery') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('deliverylist')" :active="request()->routeIs('deliverylist')">
+                        <x-nav-link :href="route('deliverylist')" :active="request()->routeIs('deliverylist') || request()->routeIs('requested')">
                             {{ __('Requested Delivery') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('runner-reports')" :active="request()->routeIs('acceptdelivery')">
+                        <x-nav-link :href="route('runner-reports')" :active="request()->routeIs('runner-reports')">
                             {{ __('Report') }}
                         </x-nav-link>
                     @endif
                 </div>
-
             </div>
 
             <!-- Settings Dropdown -->
@@ -116,25 +119,61 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-
-            @if(Auth::user()->usertype == "admin")
-            <x-responsive-nav-link :href="route('listcustomer')" :active="request()->routeIs('listcustomer')">
-                {{ __('Customer') }}
-            </x-responsive-nav-link>
-
+            @if (Auth::user()->selectedRole() === 'runner')
+                <x-responsive-nav-link :href="route('runnerdashboard')" :active="request()->routeIs('runnerdashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @elseif(Auth::user()->usertype == "admin")
+                <x-responsive-nav-link :href="route('admindashboard')" :active="request()->routeIs('admindashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
             @else
-            <x-responsive-nav-link :href="route('runnerregister')" :active="request()->routeIs('runnerregister')">
-                {{ __('Runner Registration') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :active="request()->routeIs('requested') || request()->routeIs('requestdelivery')">
-                {{ __('Request Delivery') }}
-            </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
             @endif
 
+            @if(Auth::user()->usertype == "admin")
+                <x-responsive-nav-link :href="route('listrunnerregistration')" :active="request()->routeIs('listrunnerregistration') || request()->routeIs('runnerapproval')">
+                    {{ __('Runner Registration') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('listcustomer')" :active="request()->routeIs('listcustomer')">
+                    {{ __('Customers') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('listrunner')" :active="request()->routeIs('listrunner')">
+                    {{ __('Runners') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('reported-users')" :active="request()->routeIs('reported-users')">
+                    {{ __('Report') }}
+                </x-responsive-nav-link>
+            @elseif(Auth::user()->selectedRole() === 'runner')
+                <x-responsive-nav-link :href="route('listdeliveries')" :active="request()->routeIs('listdeliveries') || request()->routeIs('acceptdelivery')">
+                    {{ __('Requested Delivery') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('customer-reports')" :active="request()->routeIs('customer-reports')">
+                    {{ __('Report') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
+                    {{ __('Runner Registration') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('requestdelivery')" :active="request()->routeIs('requestdelivery.form')">
+                    {{ __('Request Delivery') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('deliverylist')" :active="request()->routeIs('deliverylist') || request()->routeIs('requested')">
+                    {{ __('Requested Delivery') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('runner-reports')" :active="request()->routeIs('runner-reports')">
+                    {{ __('Report') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

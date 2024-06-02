@@ -57,4 +57,15 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function showAdminDashboard()
+    {
+        $user = Auth::user();
+
+        if ($user->usertype !== 'admin') {
+            return redirect()->route('admindashboard')->with('error', 'You are not authorized to access the admin dashboard.');
+        }
+
+        return view('admindashboard', compact('user'));
+    }
 }

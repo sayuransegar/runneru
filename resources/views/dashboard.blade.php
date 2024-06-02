@@ -1,60 +1,55 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Customer Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                <!-- Card 1: Today's Deliveries -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Today's Deliveries</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">You have  deliveries scheduled for today.</p>
-                        <a href="" class="text-blue-600 hover:underline">View Details</a>
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold mb-4">Welcome, {{ Auth::user()->name }}!</h3>
+                        <p class="text-gray-600">Here you can manage your orders and view your order history.</p>
                     </div>
-                </div>
-                <!-- Card 2: Completed Deliveries -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Completed Deliveries</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">You have completed  deliveries so far.</p>
-                        <a href="" class="text-blue-600 hover:underline">View Details</a>
+
+                    <!-- Order Status -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        @php
+                            // Count total orders made by the customer
+                            $totalOrders = App\Models\delivery::where('userid', Auth::id())->count();
+                        @endphp
+                        <div class="bg-blue-100 p-6 rounded-lg shadow">
+                            <h4 class="text-xl font-semibold mb-2">Total Orders</h4>
+                            <p class="text-gray-700 text-2xl font-bold">{{ $totalOrders }}</p>
+                        </div>
+                        @php
+                            // Count completed orders made by the customer
+                            $completedOrders = App\Models\delivery::where('userid', Auth::id())->where('status', '3')->count();
+                        @endphp
+                        <div class="bg-green-100 p-6 rounded-lg shadow">
+                            <h4 class="text-xl font-semibold mb-2">Completed Orders</h4>
+                            <p class="text-gray-700 text-2xl font-bold">{{ $completedOrders }}</p>
+                        </div>
+                        @php
+                            // Count pending orders made by the customer
+                            $pendingOrders = App\Models\delivery::where('userid', Auth::id())->where('status', null)->count();
+                        @endphp
+                        <div class="bg-yellow-100 p-6 rounded-lg shadow">
+                            <h4 class="text-xl font-semibold mb-2">Pending Orders</h4>
+                            <p class="text-gray-700 text-2xl font-bold">{{ $pendingOrders }}</p>
+                        </div>
+                        @php
+                            // Count canceled orders made by the customer
+                            $canceledOrders = App\Models\delivery::where('userid', Auth::id())->where('status', '0')->count();
+                        @endphp
+                        <div class="bg-red-100 p-6 rounded-lg shadow">
+                            <h4 class="text-xl font-semibold mb-2">Canceled Orders</h4>
+                            <p class="text-gray-700 text-2xl font-bold">{{ $canceledOrders }}</p>
+                        </div>
                     </div>
-                </div>
-                <!-- Card 3: Pending Payments -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Pending Payments</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">You have  pending payments.</p>
-                        <a href="" class="text-blue-600 hover:underline">View Details</a>
-                    </div>
-                </div>
-                <!-- Card 4: Feedback -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Feedback</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">You have received  new feedback.</p>
-                        <a href="" class="text-blue-600 hover:underline">View Details</a>
-                    </div>
-                </div>
-                <!-- Card 5: Order History -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Order History</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">View your order history and track previous deliveries.</p>
-                        <a href="" class="text-blue-600 hover:underline">View History</a>
-                    </div>
-                </div>
-                <!-- Card 6: Profile -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Profile</h3>
-                    <div class="flex items-center justify-between">
-                        <p class="text-gray-600">Manage your profile settings and preferences.</p>
-                        <a href="{{ route('profile.edit') }}" class="text-blue-600 hover:underline">Edit Profile</a>
-                    </div>
+                    <!-- Add more content as needed -->
                 </div>
             </div>
         </div>

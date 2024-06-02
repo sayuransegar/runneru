@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\RequestDelivery;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProfileController;
@@ -64,6 +65,7 @@ Route::post('/runnerapproval/{id}', [RunnerController::class, 'updateApproval'])
 Route::get('/approvedrunner/{id}', [RunnerController::class, 'showApprovedRunner'])->name('approvedrunner');
 Route::post('/update-status', [RunnerController::class, 'updateStatus'])->name('runner.updateStatus');
 Route::get('/runnerdashboard', [RunnerController::class, 'showDashboard'])->name('runnerdashboard');
+Route::get('/admindashboard', [ProfileController::class, 'showAdminDashboard'])->name('admindashboard');
 Route::get('/requestdelivery', [DeliveryController::class, 'showOnlineRunner'])->name('requestdelivery.form');
 Route::get('/listdeliveries', [DeliveryController::class, 'listDeliveries'])->name('listdeliveries')->middleware('auth');
 Route::get('/acceptdelivery/{id}', [DeliveryController::class, 'acceptDelivery'])->name('acceptdelivery');
@@ -77,5 +79,10 @@ Route::post('/reportstorecustomer', [ReportController::class, 'storeReportedCust
 Route::get('/runner-reports', [ReportController::class, 'showReportedRunner'])->name('runner-reports');
 Route::get('/customer-reports', [ReportController::class, 'showReportedCustomer'])->name('customer-reports');
 Route::get('/reported-users', [ReportController::class, 'showReportedUsers'])->name('reported-users');
+Route::post('/blockcustomer/{id}', [RegisteredUserController::class, 'blockCustomer'])->name('blockcustomer');
+Route::post('/unblockcustomer/{id}', [RegisteredUserController::class, 'unblockCustomer'])->name('unblockcustomer');
+Route::post('/blockrunner/{id}', [RunnerController::class, 'blockRunner'])->name('blockrunner');
+Route::post('/unblockrunner/{id}', [RunnerController::class, 'unblockRunner'])->name('unblockrunner');
+Route::get('/admindashboard', [RegisteredUserController::class, 'showAdminDashboard'])->name('admindashboard');
 
 require __DIR__.'/auth.php';

@@ -50,6 +50,22 @@
                                 <p class="text-gray-600 mt-4">Update Delivery Status If Customer Received The Item!</p>
                             </div>
                         </div>
+                        @if ($paymentDetails && $paymentDetails->receipt)
+                            <div class="mt-4">
+                                <a href="{{ $paymentDetails->receipt }}" target="_blank" class="text-blue-500 underline">View Receipt</a>
+                                <button id="downloadButton" type="button" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg class="w-5 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Download Receipt
+                                </button>
+                            </div>
+                        @else
+                            <div class="text-center text-red-600 mb-4">
+                                Customer has not uploaded the receipt yet.
+                            </div>
+                        @endif
                         <form action="{{ route('deliverystatusupdate', $deliveryDetails->id) }}" method="POST" class="mt-6">
                             @csrf
                             <div class="flex justify-center">
@@ -220,6 +236,29 @@
         };
 
         console.log('deliveryDetails:', deliveryDetails);
+
+        // Download Receipt
+        function downloadReceipt(url) {
+            fetch(url, { mode: 'cors' })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'receipt.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(console.error);
+        }
+
+        document.getElementById('downloadButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const receiptUrl = '{{ $paymentDetails ? $paymentDetails->receipt : null }}';
+            downloadReceipt(receiptUrl);
+        });
     </script>
     <script>
         document.getElementById('openReportModal').addEventListener('click', function () {

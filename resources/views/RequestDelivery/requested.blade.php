@@ -75,7 +75,7 @@
                                         @csrf
                                         <input type="hidden" name="deliveryid" value="{{ $deliveryid }}">
                                         <div class="mt-4">
-                                            <x-input-label for="receipt" :value="__('Upload QR Code')" />
+                                            <x-input-label for="receipt" :value="__('Upload Receipt')" />
                                             <x-text-input type="file" name="receipt" id="receipt" class="block mt-1 w-full border border-gray-300" />
                                         </div>
                                         <div class="flex items-center justify-center mt-4">
