@@ -33,8 +33,8 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb://localhost:27017/'),
-            'database' => 'runneru',
+            'dsn' => env('DB_URI', 'mongodb+srv://aimnsbri:Ame_2026@cluster0.kqysqz5.mongodb.net/'),
+            'database' => env('DB_DATABASE', 'runneru'),
         ],
 
         'sqlite' => [
