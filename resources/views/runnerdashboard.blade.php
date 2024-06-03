@@ -70,12 +70,52 @@
                             <p class="text-gray-700 text-2xl font-bold">{{ $rejectedDeliveries }}</p>
                         </div>
                     </div>
+                    <canvas class="mt-4" id="deliveryChart" width="400" height="200"></canvas>
 
                     <!-- Add more content as needed -->
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve delivery statistics from the server
+            fetch('{{ route("delivery.statistics") }}')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract data for the chart
+                    const months = Object.keys(data);
+                    const counts = Object.values(data);
+
+                    // Create chart
+                    const ctx = document.getElementById('deliveryChart').getContext('2d');
+                    const chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: months,
+                            datasets: [{
+                                label: 'Total Deliveries',
+                                data: counts,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching delivery statistics:', error);
+                });
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

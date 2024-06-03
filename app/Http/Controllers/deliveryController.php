@@ -211,5 +211,36 @@ class DeliveryController extends Controller
         return redirect()->back()->with('success', 'Receipt uploaded successfully.');
     }
 
+    public function statistics()
+    {
+        // Get the current authenticated user's ID
+        $userId = auth()->id();
+
+        // Query MongoDB to get delivery statistics by month
+        $statistics = Delivery::where('runnerid', $userId)
+            ->where('status', 3)
+            ->raw(function ($collection) {
+                return $collection->aggregate([
+                    [
+                        '$group' => [
+                            '_id' => ['$month' => '$created_at'],
+                            'count' => ['$sum' => 1]
+                        ]
+                    ],
+                    [
+                        '$sort' => ['_id' => 1]
+                    ]
+                ]);
+            });
+            
+
+        // Format data for the chart
+        $data = [];
+        foreach ($statistics as $statistic) {
+            $data[date('M', mktime(0, 0, 0, $statistic->_id, 1))] = $statistic->count;
+        }
+
+        return response()->json($data);
+    }
 
 }
