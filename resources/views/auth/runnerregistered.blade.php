@@ -13,7 +13,7 @@
                         <!-- Display Delivery Status -->
                         <div id="delivery-status" class="text-center text-4xl mt-4" style="font-size: 1.5rem;">
                             @php
-                                $approval = app('App\Http\Controllers\runnerController')->approval();
+                                $approval = app('App\Http\Controllers\RunnerController')->approval();
                             @endphp
 
                             @if ($approval === null)

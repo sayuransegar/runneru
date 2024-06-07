@@ -18,7 +18,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                         @php
                             // Count total orders made by the customer
-                            $totalOrders = App\Models\delivery::where('userid', Auth::id())->count();
+                            $totalOrders = App\Models\Delivery::where('userid', Auth::id())->count();
                         @endphp
                         <div class="bg-blue-100 p-6 rounded-lg shadow">
                             <h4 class="text-xl font-semibold mb-2">Total Orders</h4>
@@ -26,7 +26,7 @@
                         </div>
                         @php
                             // Count completed orders made by the customer
-                            $completedOrders = App\Models\delivery::where('userid', Auth::id())->where('status', '3')->count();
+                            $completedOrders = App\Models\Delivery::where('userid', Auth::id())->where('status', '3')->count();
                         @endphp
                         <div class="bg-green-100 p-6 rounded-lg shadow">
                             <h4 class="text-xl font-semibold mb-2">Completed Orders</h4>
@@ -34,7 +34,7 @@
                         </div>
                         @php
                             // Count pending orders made by the customer
-                            $pendingOrders = App\Models\delivery::where('userid', Auth::id())->where('status', null)->count();
+                            $pendingOrders = App\Models\Delivery::where('userid', Auth::id())->where('status', null)->count();
                         @endphp
                         <div class="bg-yellow-100 p-6 rounded-lg shadow">
                             <h4 class="text-xl font-semibold mb-2">Pending Orders</h4>
@@ -42,7 +42,7 @@
                         </div>
                         @php
                             // Count canceled orders made by the customer
-                            $canceledOrders = App\Models\delivery::where('userid', Auth::id())->where('status', '0')->count();
+                            $canceledOrders = App\Models\Delivery::where('userid', Auth::id())->where('status', '0')->count();
                         @endphp
                         <div class="bg-red-100 p-6 rounded-lg shadow">
                             <h4 class="text-xl font-semibold mb-2">Canceled Orders</h4>

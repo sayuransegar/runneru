@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\runner;
+use App\Models\Runner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\RequestDelivery;
 use App\Models\Delivery;
-use App\Models\runner;
-use App\Models\payment;
+use App\Models\Runner;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
