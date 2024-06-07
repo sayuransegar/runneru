@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\report;
-use App\Models\runner;
+use App\Models\Report;
+use App\Models\Runner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

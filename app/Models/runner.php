@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Payment as ModelsPayment;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
+use Spatie\FlareClient\Report;
 
-class runner extends Model
+class Runner extends Model
 {
     use HasFactory;
 
@@ -35,6 +38,11 @@ class runner extends Model
      public function payments()
      {
          return $this->hasMany(Payment::class, 'runnerid');
+     }
+
+     public function reports()
+     {
+         return $this->hasMany(Report::class, 'runnerid');
      }
      
 }

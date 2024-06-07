@@ -51,7 +51,7 @@
                             {{ __('Report') }}
                         </x-nav-link>
                     @else
-                        <x-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
+                        <x-nav-link :href="app('App\Http\Controllers\RunnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
                             {{ __('Runner Registration') }}
                         </x-nav-link>
 
@@ -158,7 +158,7 @@
                     {{ __('Report') }}
                 </x-responsive-nav-link>
             @else
-                <x-responsive-nav-link :href="app('App\Http\Controllers\runnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
+                <x-responsive-nav-link :href="app('App\Http\Controllers\RunnerController')->hasRunnerRegistration() ? route('runnerregistered') : route('runnerregister')" :active="request()->routeIs('runnerregistered') || request()->routeIs('runnerregister')">
                     {{ __('Runner Registration') }}
                 </x-responsive-nav-link>
 
