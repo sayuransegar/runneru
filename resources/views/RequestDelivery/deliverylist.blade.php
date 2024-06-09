@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                     <!-- Status Filter Dropdown -->
+                    <!-- Status Filter Dropdown -->
                     <div class="mb-4">
                         <label for="status-filter" class="block font-medium text-sm text-gray-700">Filter by Status:</label>
                         <select id="status-filter" name="status-filter" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -21,74 +21,77 @@
                             <option value="0">Rejected</option>
                         </select>
                     </div>
-                    <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                            <tr>
-                                <th>No</th>
-                                <th>Item</th>
-                                <th>Price Range</th>
-                                <th>Shop Location</th>
-                                <th>Delivery Location</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style="margin-top: 10px;">
-                            @php $number = 1; @endphp
-                            @foreach($listdeliveries as $listdelivery)
-                                <tr data-status="{{ $listdelivery->status ?? 'null' }}">
-                                    <td>{{ $number++ }}</td>
-                                    <td>{{ $listdelivery->item ?? 'N/A' }}</td>
-                                    <td>{{ $listdelivery->price ?? 'N/A' }}</td>
-                                    <td>{{ $listdelivery->shoplocation ?? 'N/A' }}</td>
-                                    <td>{{ $listdelivery->deliverylocation ?? 'N/A' }}</td>
-                                    <td>
-                                        @if($listdelivery->status == null)
-                                            <span class="text-orange-500">Pending</span>
-                                        @elseif($listdelivery->status == '1')
-                                            <span class="text-blue-500">Accepted</span>
-                                        @elseif($listdelivery->status == '2')
-                                            <span class="text-purple-500">Out For Delivery</span>
-                                        @elseif($listdelivery->status == '3')
-                                            <span class="text-green-500">Delivered</span>
-                                        @elseif($listdelivery->status == '0')
-                                            <span class="text-red-500">Rejected</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('requested', $listdelivery->id) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                        <!-- {{ route('acceptdelivery', $listdelivery->id) }} -->
-                                    </td>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white text-center border-collapse border-spacing-0">
+                            <thead class="border-b-2 border-gray-200">
+                                <tr>
+                                    <th class="py-2 px-4">No</th>
+                                    <th class="py-2 px-4">Item</th>
+                                    <th class="py-2 px-4">Price Range</th>
+                                    <th class="py-2 px-4">Shop Location</th>
+                                    <th class="py-2 px-4">Delivery Location</th>
+                                    <th class="py-2 px-4">Status</th>
+                                    <th class="py-2 px-4">Actions</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="requestedDeliveryTableBody" class="divide-y divide-gray-200">
+                                @php $number = 1; @endphp
+                                @foreach($listdeliveries as $listdelivery)
+                                    <tr data-status="{{ $listdelivery->status ?? 'null' }}">
+                                        <td class="py-2 px-4">{{ $number++ }}</td>
+                                        <td class="py-2 px-4">{{ $listdelivery->item ?? 'N/A' }}</td>
+                                        <td class="py-2 px-4">{{ $listdelivery->price ?? 'N/A' }}</td>
+                                        <td class="py-2 px-4">{{ $listdelivery->shoplocation ?? 'N/A' }}</td>
+                                        <td class="py-2 px-4">{{ $listdelivery->deliverylocation ?? 'N/A' }}</td>
+                                        <td class="py-2 px-4">
+                                            @if($listdelivery->status == null)
+                                                <span class="text-orange-500">Pending</span>
+                                            @elseif($listdelivery->status == '1')
+                                                <span class="text-blue-500">Accepted</span>
+                                            @elseif($listdelivery->status == '2')
+                                                <span class="text-purple-500">Out For Delivery</span>
+                                            @elseif($listdelivery->status == '3')
+                                                <span class="text-green-500">Delivered</span>
+                                            @elseif($listdelivery->status == '0')
+                                                <span class="text-red-500">Rejected</span>
+                                            @endif
+                                        </td>
+                                        <td class="py-2 px-4">
+                                            <a href="{{ route('requested', $listdelivery->id) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                            <!-- {{ route('acceptdelivery', $listdelivery->id) }} -->
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    jQuery(document).ready(function($) {
-        $('#status-filter').change(function() {
-            var selectedStatus = $(this).val();
-            $('tbody tr').hide(); // Hide all table rows
-            if (selectedStatus === '') {
-                $('tbody tr').show(); // Show all rows if 'All' selected
-            } else {
-                $('tbody tr').each(function() {
-                    var status = $(this).data('status');
-                    if (selectedStatus === 'null') {
-                        if (status === null) {
-                            $(this).show(); // Show rows with null status
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $('#status-filter').change(function() {
+                var selectedStatus = $(this).val();
+                $('tbody tr').hide(); // Hide all table rows
+                if (selectedStatus === '') {
+                    $('tbody tr').show(); // Show all rows if 'All' selected
+                } else {
+                    $('tbody tr').each(function() {
+                        var status = $(this).data('status');
+                        if (selectedStatus === 'null') {
+                            if (status === null) {
+                                $(this).show(); // Show rows with null status
+                            }
+                        } else if (status == selectedStatus) {
+                            $(this).show(); // Show rows with matching status
                         }
-                    } else if (status == selectedStatus) {
-                        $(this).show(); // Show rows with matching status
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 </x-app-layout>

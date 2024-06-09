@@ -70,55 +70,85 @@
                             <p class="text-gray-700 text-2xl font-bold">{{ $rejectedDeliveries }}</p>
                         </div>
                     </div>
-                    <canvas class="mt-4" id="deliveryChart" width="400" height="200"></canvas>
 
-                    <!-- Add more content as needed -->
+                    <!-- Button Group for Chart Type -->
+                    <div class="mt-6 flex flex-wrap justify-center gap-4">
+                        <button id="totalDeliveriesBtn" class="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto">Total Deliveries</button>
+                        <button id="completedDeliveriesBtn" class="bg-green-500 text-white px-4 py-2 rounded w-full sm:w-auto">Completed Deliveries</button>
+                        <button id="pendingDeliveriesBtn" class="bg-yellow-500 text-white px-4 py-2 rounded w-full sm:w-auto">Pending Deliveries</button>
+                        <button id="rejectedDeliveriesBtn" class="bg-red-500 text-white px-4 py-2 rounded w-full sm:w-auto">Rejected Deliveries</button>
+                    </div>
+
+                    <canvas class="mt-4" id="deliveryChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Retrieve delivery statistics from the server
-            fetch('{{ route("delivery.statistics") }}')
-                .then(response => response.json())
-                .then(data => {
-                    // Extract data for the chart
-                    const months = Object.keys(data);
-                    const counts = Object.values(data);
+            const ctx = document.getElementById('deliveryChart').getContext('2d');
+            let chart;
 
-                    // Create chart
-                    const ctx = document.getElementById('deliveryChart').getContext('2d');
-                    const chart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: months,
-                            datasets: [{
-                                label: 'Total Deliveries',
-                                data: counts,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+            // Function to fetch and update chart data
+            function fetchAndUpdateChart(route) {
+                fetch(route)
+                    .then(response => response.json())
+                    .then(data => {
+                        const months = Object.keys(data);
+                        const counts = Object.values(data);
+
+                        if (chart) {
+                            chart.destroy();
+                        }
+
+                        chart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: months,
+                                datasets: [{
+                                    label: 'Deliveries',
+                                    data: counts,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching delivery statistics:', error);
                     });
-                })
-                .catch(error => {
-                    console.error('Error fetching delivery statistics:', error);
-                });
-        });
-    </script>
+            }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+            // Initial fetch for total deliveries
+            fetchAndUpdateChart('{{ route("delivery.statistics", ["type" => "total"]) }}');
+
+            // Event listeners for buttons
+            document.getElementById('totalDeliveriesBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("delivery.statistics", ["type" => "total"]) }}');
+            });
+
+            document.getElementById('completedDeliveriesBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("delivery.statistics", ["type" => "completed"]) }}');
+            });
+
+            document.getElementById('pendingDeliveriesBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("delivery.statistics", ["type" => "pending"]) }}');
+            });
+
+            document.getElementById('rejectedDeliveriesBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("delivery.statistics", ["type" => "rejected"]) }}');
+            });
+
             const statusToggle = document.getElementById('status-toggle');
             const statusLabel = document.getElementById('status-label');
 

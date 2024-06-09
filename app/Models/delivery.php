@@ -33,7 +33,7 @@ class Delivery extends Model
 
     public function runner()
     {
-        return $this->belongsTo(Runner::class, 'runnerid', '_id');
+        return $this->belongsTo(Runner::class, 'runnerid');
     }
 
     public function payment()

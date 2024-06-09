@@ -18,49 +18,51 @@
                             </x-primary-button>
                         </div>
                     </form>
-                    <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Student ID</th>
-                                <th>Hostel</th>
-                                <th>Reason</th>
-                                <th>QR Code</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style="margin-top: 10px;">
-                            @php $number = 1; @endphp
-                            @foreach($listrunners as $listrunner)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white text-center border-collapse border-spacing-0">
+                            <thead class="border-b-2 border-gray-200">
                                 <tr>
-                                    <td>{{ $number++ }}</td>
-                                    <td>{{ $listrunner->user->name }}</td>
-                                    <td>{{ $listrunner->user->studid }}</td>
-                                    <td>{{ $listrunner->hostel }}</td>
-                                    <td>{{ $listrunner->reason }}</td>
-                                    <td style="display: flex; justify-content: center; align-items: center;"><img src="{{ $listrunner->qrcode }}" alt="QR Code" style="width: 50px; height: 50px;"></td>
-                                    <td>
-                                        @if($listrunner->user->blocked)
-                                            <form method="POST" action="{{ route('unblockrunner', $listrunner->user->id) }}">
-                                                @csrf
-                                                <x-primary-button type="submit" class="ml-3">
-                                                    {{ __('Unblock') }}
-                                                </x-primary-button>
-                                            </form>
-                                        @else
-                                            <form method="POST" action="{{ route('blockrunner', $listrunner->user->id) }}">
-                                                @csrf
-                                                <x-danger-button type="submit" class="ml-3">
-                                                    {{ __('Block') }}
-                                                </x-danger-button>
-                                            </form>
-                                        @endif
-                                    </td>
+                                    <th class="py-2 px-4">No</th>
+                                    <th class="py-2 px-4">Name</th>
+                                    <th class="py-2 px-4">Student ID</th>
+                                    <th class="py-2 px-4">Hostel</th>
+                                    <th class="py-2 px-4">Reason</th>
+                                    <th class="py-2 px-4">QR Code</th>
+                                    <th class="py-2 px-4">Actions</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @php $number = 1; @endphp
+                                @foreach($listrunners as $listrunner)
+                                    <tr>
+                                        <td class="py-2 px-4">{{ $number++ }}</td>
+                                        <td class="py-2 px-4">{{ $listrunner->user->name }}</td>
+                                        <td class="py-2 px-4">{{ $listrunner->user->studid }}</td>
+                                        <td class="py-2 px-4">{{ $listrunner->hostel }}</td>
+                                        <td class="py-2 px-4">{{ $listrunner->reason }}</td>
+                                        <td class="py-2 px-4 flex justify-center items-center"><img src="{{ $listrunner->qrcode }}" alt="QR Code" style="width: 50px; height: 50px;"></td>
+                                        <td class="py-2 px-4">
+                                            @if($listrunner->user->blocked)
+                                                <form method="POST" action="{{ route('unblockrunner', $listrunner->user->id) }}">
+                                                    @csrf
+                                                    <x-primary-button type="submit" class="ml-3">
+                                                        {{ __('Unblock') }}
+                                                    </x-primary-button>
+                                                </form>
+                                            @else
+                                                <form method="POST" action="{{ route('blockrunner', $listrunner->user->id) }}">
+                                                    @csrf
+                                                    <x-danger-button type="submit" class="ml-3">
+                                                        {{ __('Block') }}
+                                                    </x-danger-button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

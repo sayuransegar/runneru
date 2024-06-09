@@ -29,7 +29,7 @@
                     <!-- User Management -->
                     <div class="mb-6">
                         <h3 class="text-xl font-semibold mb-4">User Management</h3>
-                        <div class="overflow-hidden border rounded-lg shadow-md">
+                        <div class="overflow-x-auto border rounded-lg shadow-md">
                             <table class="min-w-full bg-white text-center">
                                 <thead>
                                     <tr>
@@ -50,7 +50,7 @@
                                         <td class="py-2 px-4 border-b">{{ $user->studid }}</td>
                                         <td class="py-2 px-4 border-b">{{ $user->email }}</td>
                                         <td class="py-2 px-4 border-b">{{ $user->blocked ? 'Yes' : 'No' }}</td>
-                                        <td>
+                                        <td class="py-2 px-4 border-b">
                                             @if($user->blocked)
                                                 <form method="POST" action="{{ route('unblockcustomer', $user->id) }}">
                                                     @csrf
@@ -73,6 +73,7 @@
                             </table>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

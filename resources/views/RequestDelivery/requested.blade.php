@@ -76,7 +76,7 @@
                                         <input type="hidden" name="deliveryid" value="{{ $deliveryid }}">
                                         <div class="mt-4">
                                             <x-input-label for="receipt" :value="__('Upload Receipt')" />
-                                            <x-text-input type="file" name="receipt" id="receipt" class="block mt-1 w-full border border-gray-300" />
+                                            <x-text-input type="file" name="receipt" id="receipt" class="block mt-1 w-full border border-gray-300" required />
                                         </div>
                                         <div class="flex items-center justify-center mt-4">
                                             <x-primary-button class="ms-4">

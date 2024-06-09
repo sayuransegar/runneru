@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Session;
 
 class RegisteredUserController extends Controller
 {
@@ -44,6 +45,7 @@ class RegisteredUserController extends Controller
             'phonenum' => $request->phonenum,
             'studid' => $request->studid,
             'usertype' => $request->usertype,
+            'blocked' => false,
             'password' => Hash::make($request->password),
         ]);
 
@@ -51,6 +53,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        Session::flash('success', 'You have successfully register.');
         return redirect(route('dashboard', absolute: false));
     }
 
@@ -74,7 +77,8 @@ class RegisteredUserController extends Controller
         $customer = User::findOrFail($id);
         $customer->update(['blocked' => true]);
 
-        return redirect()->back()->with('status', 'Customer blocked successfully');
+        Session::flash('success', 'Customer blocked successfully');
+        return redirect()->back();
     }
 
     public function unblockCustomer($id)
@@ -82,7 +86,8 @@ class RegisteredUserController extends Controller
         $customer = User::findOrFail($id);
         $customer->update(['blocked' => false]);
 
-        return redirect()->back()->with('status', 'Customer unblocked successfully');
+        Session::flash('success', 'Customer unblocked successfully');
+        return redirect()->back();
     }
     
     public function showAdminDashboard()

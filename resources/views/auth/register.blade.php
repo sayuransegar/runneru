@@ -39,6 +39,12 @@
             </select>
         </div>
 
+        <!-- Block Status -->
+        <div class="mt-4 hidden">
+            <x-input-label for="blocked" :value="__('Email')" />
+            <x-text-input id="blocked" class="block mt-1 w-full" type="text" name="blocked" :value="false" autocomplete="off" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

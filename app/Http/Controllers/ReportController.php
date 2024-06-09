@@ -6,6 +6,7 @@ use App\Models\Report;
 use App\Models\Runner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ReportController extends Controller
 {
@@ -33,7 +34,8 @@ class ReportController extends Controller
         // Store the report data in the database
         Report::create($reportData);
 
-        return redirect()->route('runner-reports')->with('success', 'Report submitted successfully.');
+        Session::flash('success', 'Report submitted successfully.');
+        return redirect()->route('runner-reports');
     }
 
     public function storeReportedCustomer(Request $request){
@@ -60,7 +62,8 @@ class ReportController extends Controller
         // Store the report data in the database
         Report::create($reportData);
 
-        return redirect()->route('customer-reports')->with('success', 'Report submitted successfully.');
+        Session::flash('success', 'Report submitted successfully.');
+        return redirect()->route('customer-reports');
     }
 
     public function showReportedRunner(Request $request)

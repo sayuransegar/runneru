@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Session;
 
 class DeliveryController extends Controller
 {
@@ -34,6 +35,7 @@ class DeliveryController extends Controller
 
         $delivery = Delivery::create($data); // Create the delivery record
 
+        Session::flash('success', 'You successfully request delivery');
         return redirect()->route('requested', ['id' => $delivery->id]); // Redirect with the ID of the new delivery
     }
 
@@ -79,7 +81,8 @@ class DeliveryController extends Controller
             // Delete the delivery record
             $delivery->delete();
             
-            return Redirect::route('dashboard')->with('success', 'Delivery canceled successfully');
+            Session::flash('success', 'Delivery canceled successfully');
+            return Redirect::route('dashboard');
         } else {
             return Redirect::route('dashboard')->with('error', 'No delivery found to cancel');
         }
@@ -138,6 +141,8 @@ class DeliveryController extends Controller
         $deliveryStatus = Delivery::findOrFail($id);
         $deliveryStatus->status = $request->status;
         $deliveryStatus->save();
+
+        Session::flash('success', 'Approval status updated successfully!');
     
         if ($request->status == '1') {
             // If accepted, redirect to the same view but with the card-after-accept visible
@@ -147,7 +152,7 @@ class DeliveryController extends Controller
             return redirect()->route('acceptdelivery', ['id' => $id])->with('accepted', true);
         } else {
             // If rejected, redirect to the dashboard
-            return redirect()->route('runnerdashboard')->with('status', 'Approval status updated successfully!');
+            return redirect()->route('runnerdashboard');
         }
     }
 
@@ -208,39 +213,125 @@ class DeliveryController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Receipt uploaded successfully.');
+        Session::flash('success', 'Receipt uploaded successfully.');
+        return redirect()->back();
     }
 
-    public function statistics()
+    public function statistics(Request $request)
     {
         // Get the current authenticated user's ID
         $userId = auth()->id();
-
-        // Query MongoDB to get delivery statistics by month
-        $statistics = Delivery::where('runnerid', $userId)
-            ->where('status', 3)
-            ->raw(function ($collection) {
-                return $collection->aggregate([
-                    [
-                        '$group' => [
-                            '_id' => ['$month' => '$created_at'],
-                            'count' => ['$sum' => 1]
-                        ]
-                    ],
-                    [
-                        '$sort' => ['_id' => 1]
+    
+        // Find the runner ID associated with the authenticated user
+        $runner = Runner::where('userid', $userId)->first();
+    
+        // Ensure we have a valid runner
+        if (!$runner) {
+            return response()->json([]);
+        }
+    
+        $runnerId = $runner->_id;
+    
+        // Determine the type of statistics to fetch
+        $type = $request->query('type', 'total'); // Default to total if no type is provided
+    
+        $matchConditions = ['runnerid' => $runnerId];
+    
+        switch ($type) {
+            case 'completed':
+                $matchConditions['status'] = '3';
+                break;
+            case 'pending':
+                $matchConditions['status'] = null;
+                break;
+            case 'rejected':
+                $matchConditions['status'] = '0';
+                break;
+            case 'total':
+            default:
+                // No additional conditions for total
+                break;
+        }
+    
+        // Perform the aggregation with the raw method
+        $statistics = Delivery::raw(function ($collection) use ($matchConditions) {
+            return $collection->aggregate([
+                [
+                    '$match' => $matchConditions // Match the runner ID and status conditions
+                ],
+                [
+                    '$group' => [
+                        '_id' => ['$month' => '$created_at'],
+                        'count' => ['$sum' => 1]
                     ]
-                ]);
-            });
-            
-
+                ],
+                [
+                    '$sort' => ['_id' => 1]
+                ]
+            ]);
+        });
+    
         // Format data for the chart
         $data = [];
         foreach ($statistics as $statistic) {
-            $data[date('M', mktime(0, 0, 0, $statistic->_id, 1))] = $statistic->count;
+            $monthNumber = $statistic->_id;
+            $monthName = date('M', mktime(0, 0, 0, $monthNumber, 1));
+            $data[$monthName] = $statistic->count;
+        }
+    
+        return response()->json($data);
+    }
+    
+    public function orderStatistics(Request $request)
+    {
+        $userId = auth()->id();
+        $type = $request->query('type', 'total');
+
+        $matchConditions = ['userid' => $userId];
+
+        switch ($type) {
+            case 'completed':
+                $matchConditions['status'] = '3';
+                break;
+            case 'pending':
+                $matchConditions['status'] = null;
+                break;
+            case 'canceled':
+                $matchConditions['status'] = '0';
+                break;
+            case 'total':
+            default:
+                // No additional conditions for total
+                break;
+        }
+
+        $statistics = Delivery::raw(function ($collection) use ($matchConditions) {
+            return $collection->aggregate([
+                [
+                    '$match' => $matchConditions
+                ],
+                [
+                    '$group' => [
+                        '_id' => ['$month' => '$created_at'],
+                        'count' => ['$sum' => 1]
+                    ]
+                ],
+                [
+                    '$sort' => ['_id' => 1]
+                ]
+            ]);
+        });
+
+        $data = [];
+        foreach ($statistics as $statistic) {
+            $monthNumber = $statistic->_id;
+            $monthName = date('M', mktime(0, 0, 0, $monthNumber, 1));
+            $data[$monthName] = $statistic->count;
         }
 
         return response()->json($data);
     }
+    
+
 
 }
