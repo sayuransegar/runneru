@@ -21,7 +21,6 @@
 
                     <!-- Section for Reported Customers -->
                     <div id="reported-customer" style="display: none;">
-                        <h3 class="text-lg font-bold mb-2">Reported Customers</h3>
                         <!-- Search Form -->
                         <form id="searchCustomerForm">
                             <div class="flex items-center mb-4">
@@ -31,33 +30,34 @@
                                 </x-primary-button>
                             </div>
                         </form>
-                        <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Student ID</th>
-                                    <th>Email</th>
-                                    <th>Phone Number</th>
-                                    <th>Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportedCustomersTableBody" style="margin-top: 10px;">
-                                @foreach($reportedCustomers as $customer)
-                                <tr>
-                                    <td>{{ optional($customer->reportedUser)->name }}</td>
-                                    <td>{{ optional($customer->reportedUser)->studid }}</td>
-                                    <td>{{ optional($customer->reportedUser)->email }}</td>
-                                    <td>{{ optional($customer->reportedUser)->phonenum }}</td>
-                                    <td>{{ $customer->reason }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white text-center border-collapse border-spacing-0">
+                                <thead class="border-b-2 border-gray-200">
+                                    <tr>
+                                        <th class="py-2 px-4">Name</th>
+                                        <th class="py-2 px-4">Student ID</th>
+                                        <th class="py-2 px-4">Email</th>
+                                        <th class="py-2 px-4">Phone Number</th>
+                                        <th class="py-2 px-4">Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportedCustomersTableBody" class="divide-y divide-gray-200">
+                                    @foreach($reportedCustomers as $customer)
+                                    <tr>
+                                        <td class="py-2 px-4">{{ optional($customer->reportedUser)->name }}</td>
+                                        <td class="py-2 px-4">{{ optional($customer->reportedUser)->studid }}</td>
+                                        <td class="py-2 px-4">{{ optional($customer->reportedUser)->email }}</td>
+                                        <td class="py-2 px-4">{{ optional($customer->reportedUser)->phonenum }}</td>
+                                        <td class="py-2 px-4">{{ $customer->reason }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Section for Reported Runners -->
                     <div id="reported-runner" style="display: none;">
-                        <h3 class="text-lg font-bold mb-2">Reported Runners</h3>
                         <!-- Search Form -->
                         <form id="searchRunnerForm">
                             <div class="flex items-center mb-4">
@@ -67,26 +67,28 @@
                                 </x-primary-button>
                             </div>
                         </form>
-                        <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Student ID</th>
-                                    <th>Hostel</th>
-                                    <th>Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportedRunnersTableBody" style="margin-top: 10px;">
-                                @foreach($reportedRunners as $reportedRunner)
-                                <tr>
-                                    <td>{{ optional($reportedRunner->reportedRunner->user)->name }}</td>
-                                    <td>{{ optional($reportedRunner->reportedRunner->user)->studid }}</td>
-                                    <td>{{ optional($reportedRunner->reportedRunner)->hostel }}</td>
-                                    <td>{{ $reportedRunner->reason }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white text-center border-collapse border-spacing-0">
+                                <thead class="border-b-2 border-gray-200">
+                                    <tr>
+                                        <th class="py-2 px-4">Name</th>
+                                        <th class="py-2 px-4">Student ID</th>
+                                        <th class="py-2 px-4">Hostel</th>
+                                        <th class="py-2 px-4">Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportedRunnersTableBody" class="divide-y divide-gray-200">
+                                    @foreach($reportedRunners as $reportedRunner)
+                                    <tr>
+                                        <td class="py-2 px-4">{{ optional($reportedRunner->reportedRunner->user)->name }}</td>
+                                        <td class="py-2 px-4">{{ optional($reportedRunner->reportedRunner->user)->studid }}</td>
+                                        <td class="py-2 px-4">{{ optional($reportedRunner->reportedRunner)->hostel }}</td>
+                                        <td class="py-2 px-4">{{ $reportedRunner->reason }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

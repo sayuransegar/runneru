@@ -1,5 +1,5 @@
 <x-app-layout>
-<x-slot name="header">
+    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Runner Registration') }}
         </h2>
@@ -11,28 +11,31 @@
                 <div class="p-6 text-gray-900">
                     <div class="container">
                         <!-- Display Delivery Status -->
-                        <div id="delivery-status" class="text-center text-4xl mt-4" style="font-size: 1.5rem;">
+                        <div id="delivery-status" class="text-center mt-4">
                             @php
                                 $approval = app('App\Http\Controllers\RunnerController')->approval();
                             @endphp
 
                             @if ($approval === null)
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block;">P</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.1s;">e</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.2s;">n</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.3s;">d</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.4s;">i</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.5s;">n</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.6s;">g</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.7s;">.</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.8s;">.</span>
-                                <span class="animate__animated animate__bounce animate__infinite animate__slower" style="display: inline-block; animation-delay: 0.9s;">.</span>
+                                <div class="pending-card card">
+                                    <div class="status">Pending...</div>
+                                    <div class="message">Please wait for admin approval.</div>
+                                </div>
                             @elseif ($approval === '0')
-                                Rejected
+                                <div class="rejected-card card">
+                                    <div class="status">Rejected</div>
+                                    <div class="message">Your registration has been rejected.</div>
+                                </div>
                             @elseif ($approval === '1')
-                                Approved
+                                <div class="approved-card card">
+                                    <div class="status">Approved</div>
+                                    <div class="message">Your registration has been approved!</div>
+                                </div>
                             @else
-                                Unknown
+                                <div class="unknown-card card">
+                                    <div class="status">Unknown</div>
+                                    <div class="message">Status not available.</div>
+                                </div>
                             @endif
                         </div>
                         <form action="{{ route('cancelregistration') }}" method="post">
@@ -55,8 +58,42 @@
             </div>
         </div>
     </div>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        .card {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            font-size: 18px;
+        }
+
+        .pending-card {
+            background-color: #ffcc00; /* Yellow */
+            color: #333; /* Dark Gray */
+        }
+
+        .rejected-card {
+            background-color: #ff3300; /* Red */
+            color: #fff; /* White */
+        }
+
+        .approved-card {
+            background-color: #00cc00; /* Green */
+            color: #fff; /* White */
+        }
+
+        .unknown-card {
+            background-color: #f0f0f0; /* Light Gray */
+            color: #333; /* Dark Gray */
+        }
+    </style>
 </x-app-layout>

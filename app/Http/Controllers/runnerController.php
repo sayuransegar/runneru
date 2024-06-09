@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Session;
 
 class RunnerController extends Controller
 {
@@ -31,18 +32,34 @@ class RunnerController extends Controller
             ])->getSecurePath();
         }
 
+        if ($request->hasFile('cardmatric')) {
+            //upload to cloudinary
+            $path = 'runneru/cardmatric';
+            $file = $request->file('cardmatric')->getClientOriginalName();
+
+            $fileName = pathinfo($file, PATHINFO_FILENAME);
+
+            $publicId = date('Y-m-d_His'). '_'. $fileName;
+            $cardmatric = Cloudinary::upload($request->file('cardmatric')->getRealPath(),
+            [
+            "public_id" => $publicId,
+            "folder" => $path 
+            ])->getSecurePath();
+        }
 
         $data = [
             'userid' => Auth::id(),
             'hostel' => $request->hostel,
             'reason' => $request->reason,
             'qrcode' => $upload,
+            'cardmatric' => $cardmatric,
             'approval' => $request->approval,
             'status' => $request->status,
         ];
 
         Runner::create($data);
 
+        Session::flash('success', 'Runner registration successfully applied!');
         return redirect()->route('runnerregistered');
     }
 
@@ -87,7 +104,8 @@ class RunnerController extends Controller
             // Delete the delivery record
             $registration->delete();
             
-            return Redirect::route('dashboard')->with('success', 'Delivery canceled successfully');
+            Session::flash('success', 'Delivery canceled successfully');
+            return Redirect::route('dashboard');
         } else {
             return Redirect::route('dashboard')->with('error', 'No delivery found to cancel');
         }
@@ -110,7 +128,8 @@ class RunnerController extends Controller
         $runner->approval = $request->approval;
         $runner->save();
 
-        return redirect()->back()->with('status', 'Approval status updated successfully!');
+        Session::flash('success', 'Approval status updated successfully!');
+        return redirect()->back();
     }
 
     public function listrunner(Request $request)
@@ -183,7 +202,8 @@ class RunnerController extends Controller
         $runner = User::findOrFail($id);
         $runner->update(['blocked' => true]);
 
-        return redirect()->route('listrunner')->with('status', 'runner blocked successfully');
+        Session::flash('success', 'Runner blocked successfully');
+        return redirect()->route('listrunner');
     }
 
     public function unblockRunner($id)
@@ -191,7 +211,8 @@ class RunnerController extends Controller
         $runner = User::findOrFail($id);
         $runner->update(['blocked' => false]);
 
-        return redirect()->route('listrunner')->with('status', 'runner unblocked successfully');
+        Session::flash('success', 'Runner blocked successfully');
+        return redirect()->route('listrunner');
     }
 
 }

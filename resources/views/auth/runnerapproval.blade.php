@@ -58,6 +58,22 @@
                             <img src="{{ $runnerRegistration->qrcode }}" alt="QR Code" class="w-32 h-32">
                         </div>
                     </div>
+
+                    <!-- Card Matric -->
+                    <div class="mt-4">
+                        <x-input-label for="qrcode" :value="__('Card Matric')" />
+                        @if($runnerRegistration->cardmatric)
+                            <button id="downloadButton" class="mt-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <svg class="w-5 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+                                </svg>
+                                Download
+                            </button>
+                        @else
+                            N/A
+                        @endif
+                    </div>
                     
                     <!-- Approve or Reject Buttons -->
                     <form action="{{ route('runnerapprovalupdate', $runnerRegistration->id) }}" method="POST" class="mt-6">
@@ -75,4 +91,29 @@
             </div>
         </div>
     </div>
+    <script>
+        // Download Card Matric
+        function downloadCardMatric(url) {
+            fetch(url, { mode: 'cors' })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'Card_Matric.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(console.error);
+        }
+
+        document.getElementById('downloadButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const cardmatricUrl = '{{ $runnerRegistration ? $runnerRegistration->cardmatric : null }}';
+            downloadCardMatric(cardmatricUrl);
+        });
+        
+    </script>
 </x-app-layout>

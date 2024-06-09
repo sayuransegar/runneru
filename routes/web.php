@@ -85,5 +85,7 @@ Route::post('/blockrunner/{id}', [RunnerController::class, 'blockRunner'])->name
 Route::post('/unblockrunner/{id}', [RunnerController::class, 'unblockRunner'])->name('unblockrunner');
 Route::get('/admindashboard', [RegisteredUserController::class, 'showAdminDashboard'])->name('admindashboard');
 Route::get('/delivery/statistics', [DeliveryController::class, 'statistics'])->name('delivery.statistics');
+Route::get('/order-statistics', [DeliveryController::class, 'orderStatistics'])->name('order.statistics');
+
 
 require __DIR__.'/auth.php';

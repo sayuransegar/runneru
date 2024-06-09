@@ -16,9 +16,13 @@
                             <x-input-label for="hostel" :value="__('Hostel')" />
                             <select id="hostel" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="hostel" required autofocus autocomplete="name">
                                 <option value="" disabled selected>Select Hostel</option>
-                                <option value="mawardah">Mawardah</option>
-                                <option value="kk5">Kolej Kediaman 5</option>
-                                <option value="dhuam">Dhuam</option>
+                                <option value="Kolej Kediaman 1">Kolej Kediaman 1</option>
+                                <option value="Kolej Kediaman 2">Kolej Kediaman 2</option>
+                                <option value="Kolej Kediaman 3">Kolej Kediaman 3</option>
+                                <option value="Kolej Kediaman 4">Kolej Kediaman 4</option>
+                                <option value="Kolej Kediaman 5">Kolej Kediaman 5</option>
+                                <option value="Mawardah">Mawardah</option>
+                                <option value="Dhuam">Dhuam</option>
                             </select>
                         </div>
 
@@ -35,7 +39,12 @@
 
                         <div class="mt-4">
                             <x-input-label for="qrcode" :value="__('Upload QR Code')" />
-                            <x-text-input type="file" name="qrcode" id="qrcode" class="block mt-1 w-full" />
+                            <x-text-input type="file" name="qrcode" id="qrcode" class="block mt-1 w-full" required/>
+                        </div>
+
+                        <div class="mt-4">
+                            <x-input-label for="cardmatric" :value="__('Upload Card Matric in PDF')" />
+                            <x-text-input type="file" name="cardmatric" id="cardmatric" class="block mt-1 w-full" required/>
                         </div>
 
                         <!-- Apply Button -->

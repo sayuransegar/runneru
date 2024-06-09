@@ -20,29 +20,31 @@
                     </form>
 
                     <!-- Report List Table -->
-                    <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                            <tr>
-                                <th>No</th>
-                                <th>Runner Name</th>
-                                <th>Student ID</th>
-                                <th>Phone Number</th>
-                                <th>Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody style="margin-top: 10px;">
-                            @php $number = 1; @endphp
-                            @foreach($runnerReportLists as $runnerReportList)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white text-center">
+                            <thead>
                                 <tr>
-                                    <td>{{ $number++ }}</td>
-                                    <td>{{ optional($runnerReportList->runner->user)->name ?? 'N/A' }}</td>
-                                    <td>{{ optional($runnerReportList->runner->user)->studid ?? 'N/A' }}</td>
-                                    <td>{{ optional($runnerReportList->runner->user)->phonenum ?? 'N/A' }}</td>
-                                    <td>{{ $runnerReportList->reason ?? 'N/A' }}</td>
+                                    <th class="px-6 py-3 border-b border-gray-200">No</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Runner Name</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Student ID</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Phone Number</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Reason</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php $number = 1; @endphp
+                                @foreach($runnerReportLists as $runnerReportList)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $number++ }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ optional($runnerReportList->runner->user)->name ?? 'N/A' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ optional($runnerReportList->runner->user)->studid ?? 'N/A' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ optional($runnerReportList->runner->user)->phonenum ?? 'N/A' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $runnerReportList->reason ?? 'N/A' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

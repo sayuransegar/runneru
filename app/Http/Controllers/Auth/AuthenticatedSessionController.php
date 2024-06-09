@@ -11,6 +11,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Runner;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
@@ -52,6 +53,7 @@ class AuthenticatedSessionController extends Controller
                     if ($runner->approval == "1") {
                         // $runner->update(['status' => 'online']);
                         Auth::login($user);
+                        Session::flash('success', 'You have successfully logged in.');
                         return redirect()->route('runnerdashboard');
                     } else {
                         return back()->withErrors(['role' => 'Your runner account is not approved.']);
@@ -62,6 +64,7 @@ class AuthenticatedSessionController extends Controller
             } elseif ($credentials['role'] === 'customer') {
                 if ($user->usertype == "customer") {
                     Auth::login($user);
+                    Session::flash('success', 'You have successfully logged in.');
                     return redirect()->route('dashboard');
                 } else {
                     return back()->withErrors(['role' => 'You are not a customer.']);
@@ -69,6 +72,7 @@ class AuthenticatedSessionController extends Controller
             } elseif($credentials['role'] === 'admin'){
                 if ($user->usertype == "admin") {
                     Auth::login($user);
+                    Session::flash('success', 'You have successfully logged in.');
                     return redirect()->route('admindashboard');
                 } else {
                     return back()->withErrors(['role' => 'You are not an admin.']);

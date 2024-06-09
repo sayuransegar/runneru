@@ -18,49 +18,51 @@
                             </x-primary-button>
                         </div>
                     </form>
-                    <table class="table table-bordered dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead style="border-bottom: 2px solid #e2e8f0; margin-bottom: 10px;">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Student ID</th>
-                                <th>Email</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style="margin-top: 10px;">
-                            @php $number = 1; @endphp
-                            @forelse($customers as $customer)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white text-center border-collapse border-spacing-0">
+                            <thead class="border-b-2 border-gray-200">
                                 <tr>
-                                    <td>{{ $number++ }}</td>
-                                    <td>{{ $customer->name }}</td>
-                                    <td>{{ $customer->studid }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>
-                                        @if($customer->blocked)
-                                            <form method="POST" action="{{ route('unblockcustomer', $customer->id) }}">
-                                                @csrf
-                                                <x-primary-button type="submit" class="ml-3">
-                                                    {{ __('Unblock') }}
-                                                </x-primary-button>
-                                            </form>
-                                        @else
-                                            <form method="POST" action="{{ route('blockcustomer', $customer->id) }}">
-                                                @csrf
-                                                <x-danger-button type="submit" class="ml-3">
-                                                    {{ __('Block') }}
-                                                </x-danger-button>
-                                            </form>
-                                        @endif
-                                    </td>
+                                    <th class="py-2 px-4">No</th>
+                                    <th class="py-2 px-4">Name</th>
+                                    <th class="py-2 px-4">Student ID</th>
+                                    <th class="py-2 px-4">Email</th>
+                                    <th class="py-2 px-4">Actions</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5">{{ __('No customers found') }}</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @php $number = 1; @endphp
+                                @forelse($customers as $customer)
+                                    <tr>
+                                        <td class="py-2 px-4">{{ $number++ }}</td>
+                                        <td class="py-2 px-4">{{ $customer->name }}</td>
+                                        <td class="py-2 px-4">{{ $customer->studid }}</td>
+                                        <td class="py-2 px-4">{{ $customer->email }}</td>
+                                        <td class="py-2 px-4">
+                                            @if($customer->blocked)
+                                                <form method="POST" action="{{ route('unblockcustomer', $customer->id) }}">
+                                                    @csrf
+                                                    <x-primary-button type="submit" class="ml-3">
+                                                        {{ __('Unblock') }}
+                                                    </x-primary-button>
+                                                </form>
+                                            @else
+                                                <form method="POST" action="{{ route('blockcustomer', $customer->id) }}">
+                                                    @csrf
+                                                    <x-danger-button type="submit" class="ml-3">
+                                                        {{ __('Block') }}
+                                                    </x-danger-button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="py-2 px-4">{{ __('No customers found') }}</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

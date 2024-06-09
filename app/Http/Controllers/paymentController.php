@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -32,8 +33,9 @@ class PaymentController extends Controller
             $delivery->save();
         }
 
+        Session::flash('success', 'Payment details submitted successfully and delivery status updated.');
         // Redirect to a specific route with the delivery ID
-        return redirect()->route('acceptdelivery', ['id' => $request->deliveryid])->with('success', 'Payment details submitted successfully and delivery status updated.');
+        return redirect()->route('acceptdelivery', ['id' => $request->deliveryid]);
     }
 }
 

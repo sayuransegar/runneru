@@ -2,6 +2,13 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Display Session Expired Message -->
+    @if ($errors->has('message'))
+        <div class="alert alert-warning mb-4">
+            {{ $errors->first('message') }}
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 

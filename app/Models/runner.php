@@ -25,6 +25,7 @@ class Runner extends Model
          'hostel',
          'reason',
          'qrcode',
+         'cardmatric',
          'approval',
          'status',
          'blocked',

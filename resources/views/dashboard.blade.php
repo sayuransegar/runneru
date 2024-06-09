@@ -49,9 +49,84 @@
                             <p class="text-gray-700 text-2xl font-bold">{{ $canceledOrders }}</p>
                         </div>
                     </div>
-                    <!-- Add more content as needed -->
+
+                    <!-- Button Group for Chart Type -->
+                    <div class="mt-6 flex flex-wrap justify-center gap-4">
+                        <button id="totalOrdersBtn" class="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto">Total Orders</button>
+                        <button id="completedOrdersBtn" class="bg-green-500 text-white px-4 py-2 rounded w-full sm:w-auto">Completed Orders</button>
+                        <button id="pendingOrdersBtn" class="bg-yellow-500 text-white px-4 py-2 rounded w-full sm:w-auto">Pending Orders</button>
+                        <button id="canceledOrdersBtn" class="bg-red-500 text-white px-4 py-2 rounded w-full sm:w-auto">Canceled Orders</button>
+                    </div>
+
+                    <canvas class="mt-4" id="orderChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('orderChart').getContext('2d');
+            let chart;
+
+            // Function to fetch and update chart data
+            function fetchAndUpdateChart(route) {
+                fetch(route)
+                    .then(response => response.json())
+                    .then(data => {
+                        const months = Object.keys(data);
+                        const counts = Object.values(data);
+
+                        if (chart) {
+                            chart.destroy();
+                        }
+
+                        chart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: months,
+                                datasets: [{
+                                    label: 'Orders',
+                                    data: counts,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching order statistics:', error);
+                    });
+            }
+
+            // Initial fetch for total orders
+            fetchAndUpdateChart('{{ route("order.statistics", ["type" => "total"]) }}');
+
+            // Event listeners for buttons
+            document.getElementById('totalOrdersBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("order.statistics", ["type" => "total"]) }}');
+            });
+
+            document.getElementById('completedOrdersBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("order.statistics", ["type" => "completed"]) }}');
+            });
+
+            document.getElementById('pendingOrdersBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("order.statistics", ["type" => "pending"]) }}');
+            });
+
+            document.getElementById('canceledOrdersBtn').addEventListener('click', function () {
+                fetchAndUpdateChart('{{ route("order.statistics", ["type" => "canceled"]) }}');
+            });
+        });
+    </script>
 </x-app-layout>
