@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Runner;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,19 +75,35 @@ class RegisteredUserController extends Controller
 
     public function blockCustomer($id)
     {
-        $customer = User::findOrFail($id);
-        $customer->update(['blocked' => true]);
-
-        Session::flash('success', 'Customer blocked successfully');
+        $user = User::findOrFail($id);
+    
+        // Update the 'blocked' status on the User model
+        $user->update(['blocked' => true]);
+    
+        // Find the related runner and update the status to offline
+        $runner = Runner::where('userid', $id)->first();
+        if ($runner) {
+            $runner->update(['status' => 'offline']);
+        }
+        
+        Session::flash('success', 'Customer blocked and set to offline successfully');
         return redirect()->back();
     }
 
     public function unblockCustomer($id)
     {
-        $customer = User::findOrFail($id);
-        $customer->update(['blocked' => false]);
-
-        Session::flash('success', 'Customer unblocked successfully');
+        $user = User::findOrFail($id);
+    
+        // Update the 'blocked' status on the User model
+        $user->update(['blocked' => false]);
+    
+        // Find the related runner and update the status to online
+        $runner = Runner::where('userid', $id)->first();
+        if ($runner) {
+            $runner->update(['status' => 'online']);
+        }
+    
+        Session::flash('success', 'Customer unblocked and set to online successfully');
         return redirect()->back();
     }
     

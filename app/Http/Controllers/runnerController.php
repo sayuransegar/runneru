@@ -199,20 +199,37 @@ class RunnerController extends Controller
 
     public function blockRunner($id)
     {
-        $runner = User::findOrFail($id);
-        $runner->update(['blocked' => true]);
-
-        Session::flash('success', 'Runner blocked successfully');
+        $user = User::findOrFail($id);
+    
+        // Update the 'blocked' status on the User model
+        $user->update(['blocked' => true]);
+    
+        // Find the related runner and update the status to offline
+        $runner = Runner::where('userid', $id)->first();
+        if ($runner) {
+            $runner->update(['status' => 'offline']);
+        }
+        
+        Session::flash('success', 'Runner blocked and set to offline successfully');
         return redirect()->route('listrunner');
     }
-
+    
     public function unblockRunner($id)
     {
-        $runner = User::findOrFail($id);
-        $runner->update(['blocked' => false]);
-
-        Session::flash('success', 'Runner blocked successfully');
+        $user = User::findOrFail($id);
+    
+        // Update the 'blocked' status on the User model
+        $user->update(['blocked' => false]);
+    
+        // Find the related runner and update the status to online
+        $runner = Runner::where('userid', $id)->first();
+        if ($runner) {
+            $runner->update(['status' => 'online']);
+        }
+    
+        Session::flash('success', 'Runner unblocked and set to online successfully');
         return redirect()->route('listrunner');
     }
+    
 
 }
